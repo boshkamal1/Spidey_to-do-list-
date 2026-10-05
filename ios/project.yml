@@ -1,0 +1,41 @@
+name: SpiderTasks
+options:
+  bundleIdPrefix: com.boshk.spidytasks
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+targets:
+  SpiderTasks:
+    type: application
+    platform: iOS
+    sources:
+      - path: SpiderTasks
+    dependencies:
+      - target: SpiderTasksWidget
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.boshk.spidytasks
+        PRODUCT_NAME: SpiderTasks
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Spider Tasks
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+  SpiderTasksWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: SpiderTasksWidget
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.boshk.spidytasks.widget
+        PRODUCT_NAME: SpiderTasksWidget
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Spider Tasks Widget
+        INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier: com.apple.widgetkit-extension
+        SKIP_INSTALL: YES
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"

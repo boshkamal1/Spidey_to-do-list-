@@ -213,6 +213,10 @@ body.focus-mode .day.today .day-toggle { display: none; }
 .sync-signed-in button { background: transparent; color: var(--cyan); border: 2px solid var(--line); padding: 6px 10px; font-weight: 700; }
 .sync-error { color: var(--red); }
 .sync-ok { color: var(--cyan); }
+.widget-connect { display: grid; gap: 6px; padding-top: 12px; border-top: 1px solid var(--line); }
+.widget-code-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.widget-code-row code { flex: 1; min-width: 0; overflow-wrap: anywhere; padding: 8px 10px; background: var(--bg); border: 2px solid var(--line); color: var(--cyan); }
+.widget-code-row button { flex: none; background: var(--panel-2); color: var(--fg); border: 2px solid var(--line); padding: 7px 10px; font-weight: 700; }
 .transfer-panel { margin-top: 20px; border-color: var(--line); box-shadow: 5px 5px 0 var(--line); }
 .transfer-panel .r-title { font-size: 1.35rem; }
 .hint { margin: 0; color: var(--muted); }
@@ -226,6 +230,8 @@ body.focus-mode .day.today .day-toggle { display: none; }
 .r-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .r-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; background: var(--panel-2); border: 2px solid var(--line); padding: 10px 12px; }
 .r-txt { flex: 1 1 160px; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.r-row-copy, .r-edit-stack { flex: 1 1 180px; min-width: 0; display: grid; gap: 2px; }
+.r-edit-stack { gap: 7px; }
 .r-acts { display: flex; gap: 2px; margin-inline-start: auto; }
 
 .days { display: grid; gap: 30px; margin-top: 30px; }
@@ -253,6 +259,29 @@ body.searching .day-toggle { display: none; }
 .add input::placeholder { color: var(--muted); }
 .add button { background: var(--red-fill); color: #fff; border: 0; font-weight: 700; padding: 0 20px; transform: skewX(-8deg); }
 .add button:hover { filter: brightness(1.12); }
+.task-add { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.task-add > input { grid-column: 1; }
+.task-add > button { grid-column: 2; grid-row: 1; }
+.schedule-details { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 7px; }
+.schedule-details summary { color: var(--cyan); cursor: pointer; font-size: .88rem; font-weight: 700; }
+.schedule-fields { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 12px; margin-top: 8px; }
+.schedule-fields label, .edit-schedule label { display: grid; gap: 3px; color: var(--muted); font-size: .78rem; font-weight: 700; }
+.schedule-fields input, .edit-schedule input { width: 132px; min-width: 0; background: var(--bg); color: var(--fg); border: 2px solid var(--line); padding: 6px 8px; }
+.schedule-fields input[type="number"], .edit-schedule input[type="number"] { width: 112px; }
+.schedule-end { color: var(--muted); font-size: .82rem; }
+.task-copy { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.task-copy .txt { padding-inline: 4px; }
+.task-time { margin-inline: 4px; color: var(--cyan); font-size: .8rem; font-weight: 700; }
+.edit-stack { flex: 1; min-width: 0; display: grid; gap: 7px; }
+.edit-schedule { display: flex; flex-wrap: wrap; align-items: end; gap: 7px; }
+.edit-schedule .schedule-end { align-self: end; padding-bottom: 7px; }
+.reminder-options { margin-top: 20px; border-color: var(--red); box-shadow: 6px 6px 0 rgba(217, 24, 43, .35); }
+.reminder-options .r-title { font-size: 1.35rem; }
+.reminder-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.reminder-form label { display: grid; gap: 4px; color: var(--muted); font-size: .85rem; font-weight: 700; }
+.reminder-form select, .reminder-form input { min-width: 0; background: var(--bg); color: var(--fg); border: 2px solid var(--line); padding: 8px 10px; }
+.reminder-form button { justify-self: start; background: var(--red-fill); color: #fff; border: 0; padding: 8px 12px; font-weight: 700; }
+.reminder-status { grid-column: 1 / -1; min-height: 1.25em; margin: 0; color: var(--muted); font-size: .85rem; }
 .tasks { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
 .tasks li { display: flex; align-items: center; gap: 8px; background: var(--panel-2); border: 2px solid var(--line); padding: 6px; padding-inline-start: 10px; min-width: 0; }
 .chk { flex: none; width: 28px; height: 28px; display: grid; place-items: center; padding: 0; background: var(--bg); color: #fff; border: 2px solid var(--muted); }
@@ -286,6 +315,7 @@ body.searching .day-toggle { display: none; }
   .achievement-list { grid-template-columns: 1fr; }
   .weekly-insights { padding: 14px; }
   .sync-form { grid-template-columns: 1fr; }
+  .reminder-form { grid-template-columns: 1fr; }
   .sync-panel summary, .transfer-panel summary { padding-inline: 14px; }
   .sync-panel .r-body, .transfer-panel .r-body { padding-inline: 14px; }
 }
@@ -344,6 +374,11 @@ body.searching .day-toggle { display: none; }
         <span>Signed in as <strong id="syncUserEmail"></strong></span>
         <button type="button" id="syncSignOut">Sign out</button>
       </div>
+      <div class="widget-connect" id="widgetConnect" hidden>
+        <strong>Widget connection code</strong>
+        <p class="hint">Keep this code private. The widget uses it to read today’s tasks only.</p>
+        <div class="widget-code-row"><code id="widgetCode"></code><button type="button" id="copyWidgetCode">Copy</button></div>
+      </div>
     </div>
   </details>
 
@@ -361,10 +396,54 @@ body.searching .day-toggle { display: none; }
           <button type="submit">Add</button>
         </div>
         <div class="chips" id="rChips" role="group" aria-label="Repeat on"></div>
+        <details class="schedule-details">
+          <summary>Add a usual time (optional)</summary>
+          <div class="schedule-fields">
+            <label>Start time<input type="time" id="rt-time"></label>
+            <label>Duration in minutes<input type="number" id="rt-duration" min="1" max="1440" step="5" placeholder="60"></label>
+            <output class="schedule-end" id="rt-end"></output>
+          </div>
+        </details>
         <p class="form-note" id="rNote" aria-live="polite"></p>
       </form>
       <ul class="r-list" id="rList"></ul>
       <p class="empty" id="rEmpty">No routines yet. Type a task, pick its days, and press Add.</p>
+    </div>
+  </details>
+
+  <details class="routine reminder-options" id="reminderPanel">
+    <summary>
+      <span class="r-title">🕷 Spider-sense alerts</span>
+      <span class="r-count" id="reminderBadge">Off</span>
+      <span class="chev ico" data-icon="down"></span>
+    </summary>
+    <div class="r-body">
+      <p class="hint">Choose how early reminders arrive and what they say. Browser reminders work while this page is open; the iPhone app can schedule them natively.</p>
+      <form class="reminder-form" id="reminderForm">
+        <label for="reminderLead">Remind me
+          <select id="reminderLead">
+            <option value="0">At the start time</option>
+            <option value="5">5 minutes before</option>
+            <option value="10">10 minutes before</option>
+            <option value="15">15 minutes before</option>
+            <option value="30">30 minutes before</option>
+            <option value="60">1 hour before</option>
+          </select>
+        </label>
+        <label for="reminderMessage">Notification phrase
+          <select id="reminderMessage">
+            <option value="suitup">Suit up, Miles — mission time.</option>
+            <option value="friendly">Your friendly neighborhood reminder.</option>
+            <option value="leap">Leap into action.</option>
+            <option value="custom">Write my own phrase…</option>
+          </select>
+        </label>
+        <label id="customReminderWrap" for="customReminder" hidden>My phrase
+          <input id="customReminder" type="text" maxlength="140" placeholder="Write your reminder phrase">
+        </label>
+        <button type="button" id="reminderToggle">Enable alerts</button>
+        <p class="reminder-status" id="reminderStatus" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </details>
 
@@ -442,6 +521,26 @@ body.searching .day-toggle { display: none; }
     const n = days.map(d => DAYS[d]);
     return "every " + (n.length === 1 ? n[0] : `${n.slice(0, -1).join(", ")} and ${n[n.length - 1]}`);
   };
+  const validClock = value => typeof value === "string" && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value);
+  const endClock = (start, duration) => {
+    if (!validClock(start) || !Number.isInteger(duration) || duration < 1) return "";
+    const [h, m] = start.split(":").map(Number);
+    const total = h * 60 + m + duration;
+    const dayOffset = Math.floor(total / 1440);
+    const end = `${pad(Math.floor(total % 1440 / 60))}:${pad(total % 60)}`;
+    return `Ends ${end}${dayOffset ? ` (+${dayOffset} day${dayOffset > 1 ? "s" : ""})` : ""}`;
+  };
+  const clockLabel = (start, duration) => {
+    if (!validClock(start)) return "";
+    const minutes = Number.isInteger(duration) && duration > 0 ? duration : null;
+    return `${start}${minutes ? ` · ${minutes} min · ${endClock(start, minutes).replace("Ends ", "")}` : ""}`;
+  };
+  const makeWidgetFeedId = () => {
+    if (crypto.randomUUID) return crypto.randomUUID().toLowerCase();
+    const bytes = new Uint8Array(24);
+    crypto.getRandomValues(bytes);
+    return [...bytes].map(b => b.toString(16).padStart(2, "0")).join("");
+  };
 
   let lsOK = true;
   const loadUi = () => {
@@ -459,15 +558,29 @@ body.searching .day-toggle { display: none; }
   const saveUi = () => {
     try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch {}
   };
-  const emptyState = () => ({ v: 2, u: 0, routines: [], weeks: {} });
+  const emptyState = () => ({ v: 2, u: 0, routines: [], weeks: {}, notifications: { enabled: false, lead: 10, message: "suitup", custom: "" }, widgetFeedId: "" });
 
   const normalize = s => {
     const out = emptyState();
     out.u = typeof s.u === "number" ? s.u : 0;
+    const prefs = s.notifications && typeof s.notifications === "object" ? s.notifications : {};
+    const leads = [0, 5, 10, 15, 30, 60];
+    out.notifications = {
+      enabled: prefs.enabled === true,
+      lead: leads.includes(prefs.lead) ? prefs.lead : 10,
+      message: ["suitup", "friendly", "leap", "custom"].includes(prefs.message) ? prefs.message : "suitup",
+      custom: typeof prefs.custom === "string" ? prefs.custom.slice(0, 140) : ""
+    };
+    out.widgetFeedId = typeof s.widgetFeedId === "string" && /^[a-f0-9-]{24,40}$/i.test(s.widgetFeedId) ? s.widgetFeedId : "";
     (Array.isArray(s.routines) ? s.routines : []).forEach(r => {
       if (!r || typeof r.id !== "string" || typeof r.t !== "string" || !Array.isArray(r.days)) return;
       const ds = r.days.filter((x, i, a) => Number.isInteger(x) && x >= 0 && x <= 6 && a.indexOf(x) === i).sort((a, b) => a - b);
-      if (ds.length) out.routines.push({ id: r.id, t: r.t, days: ds });
+      if (ds.length) {
+        const routine = { id: r.id, t: r.t, days: ds };
+        if (validClock(r.at)) routine.at = r.at;
+        if (Number.isInteger(r.dur) && r.dur > 0 && r.dur <= 1440) routine.dur = r.dur;
+        out.routines.push(routine);
+      }
     });
     const ws = s.weeks && typeof s.weeks === "object" ? s.weeks : {};
     Object.keys(ws).forEach(k => {
@@ -479,6 +592,8 @@ body.searching .day-toggle { display: none; }
         days.push(src.filter(t => t && typeof t.id === "string" && typeof t.t === "string").map(t => {
           const o = { id: t.id, t: t.t, d: !!t.d };
           if (typeof t.r === "string") o.r = t.r;
+          if (validClock(t.at)) o.at = t.at;
+          if (Number.isInteger(t.dur) && t.dur > 0 && t.dur <= 1440) o.dur = t.dur;
           return o;
         }));
       }
@@ -528,7 +643,7 @@ body.searching .day-toggle { display: none; }
   probe();
   let state = loadLocal();
 
-  const remote = { ref: null, unsub: null, live: false, dead: false, busy: false, again: false, pending: false, timer: null, fail: 0 };
+  const remote = { ref: null, feedRef: null, feedId: null, makeFeedRef: null, makeCompletionRef: null, deleteCompletion: null, bindFeed: null, watchCompletions: null, ownerUid: null, unsub: null, feedUnsub: null, completionUnsub: null, feedLoaded: false, pendingWidgetSnapshot: null, pendingWidgetDeletes: new Set(), widgetSyncPending: false, live: false, dead: false, busy: false, again: false, pending: false, timer: null, fail: 0, feedError: false };
 
   const saveLocal = () => {
     if (!lsOK) return;
@@ -587,7 +702,10 @@ body.searching .day-toggle { display: none; }
     state.routines.forEach(r => r.days.forEach(di => {
       const gk = `${r.id}:${di}`;
       if (w.gen.includes(gk) || !upcoming(wk, di)) return;
-      w.days[di].push({ id: uid(), t: r.t, d: false, r: r.id });
+      const task = { id: uid(), t: r.t, d: false, r: r.id };
+      if (validClock(r.at)) task.at = r.at;
+      if (Number.isInteger(r.dur)) task.dur = r.dur;
+      w.days[di].push(task);
       w.gen.push(gk);
       changed = true;
     }));
@@ -626,6 +744,30 @@ body.searching .day-toggle { display: none; }
     try {
       await remote.ref.set(JSON.parse(JSON.stringify(state)));
       remote.fail = 0;
+      if (remote.feedRef && remote.ownerUid) {
+        const weekdayIndex = (new Date().getDay() + 1) % 7;
+        const todayTasks = state.weeks[curWk] ? state.weeks[curWk].days[weekdayIndex] : [];
+        const tasks = todayTasks.map(t => ({
+          id: t.id,
+          title: t.t,
+          done: !!t.d,
+          start: validClock(t.at) ? t.at : "",
+          duration: Number.isInteger(t.dur) ? t.dur : 0
+        }));
+        try {
+          await remote.feedRef.set({ ownerUid: remote.ownerUid, day: todayKey, updatedAt: new Date().toISOString(), tasks, taskIds: tasks.map(t => t.id) });
+          remote.feedError = false;
+          remote.feedLoaded = true;
+          if (remote.deleteCompletion && remote.pendingWidgetDeletes.size) {
+            const pendingDeletes = [...remote.pendingWidgetDeletes];
+            const results = await Promise.allSettled(pendingDeletes.map(id => remote.deleteCompletion(id)));
+            results.forEach((result, index) => {
+              if (result.status === "fulfilled") remote.pendingWidgetDeletes.delete(pendingDeletes[index]);
+            });
+          }
+          remote.widgetSyncPending = remote.pendingWidgetDeletes.size > 0;
+        } catch { remote.feedError = true; }
+      }
     } catch (e) {
       const code = e && e.code;
       if (code === "unavailable" || code === "resource_exhausted") {
@@ -691,8 +833,11 @@ body.searching .day-toggle { display: none; }
     });
   };
 
-  const addRoutine = (text, days) => {
-    state.routines.push({ id: uid(), t: text, days });
+  const addRoutine = (text, days, at, dur) => {
+    const routine = { id: uid(), t: text, days };
+    if (validClock(at)) routine.at = at;
+    if (Number.isInteger(dur) && dur > 0 && dur <= 1440) routine.dur = dur;
+    state.routines.push(routine);
     syncWeeks();
     commit(true);
   };
@@ -733,15 +878,35 @@ body.searching .day-toggle { display: none; }
     const s = document.createElement("section");
     s.className = "day";
     s.dataset.day = i;
-    s.innerHTML = `<span class="stamp">Today</span>
+      s.innerHTML = `<span class="stamp">Today</span>
       <div class="day-head"><h2 tabindex="-1">${name}</h2><time class="date"></time><span class="count"></span><button type="button" class="day-toggle" data-act="collapse" aria-expanded="true"><span class="day-toggle-label">Hide</span><span class="ico" data-icon="down"></span></button></div>
       <div class="day-content">
         <div class="bar"><i></i></div>
-        <form class="add" autocomplete="off"><input type="text" id="add-${i}" maxlength="140" placeholder="Add a task" aria-label="New task for ${name}"><button type="submit">Add</button></form>
+        <form class="add task-add" autocomplete="off"><input type="text" id="add-${i}" maxlength="140" placeholder="Add a task" aria-label="New task for ${name}"><button type="submit">Add</button>
+          <details class="schedule-details"><summary>Add a time (optional)</summary><div class="schedule-fields"><label>Start time<input type="time" class="new-time"></label><label>Duration in minutes<input type="number" class="new-duration" min="1" max="1440" step="5" placeholder="60"></label><output class="schedule-end"></output></div></details>
+        </form>
         <ul class="tasks"></ul>
       </div>`;
     daysEl.appendChild(s);
     sections.push(s);
+  });
+
+  const updateScheduleOutput = (container, timeSelector, durationSelector) => {
+    const time = container.querySelector(timeSelector);
+    const duration = container.querySelector(durationSelector);
+    const output = container.querySelector(".schedule-end");
+    if (time && duration && output) output.textContent = endClock(time.value, Number(duration.value));
+  };
+  daysEl.addEventListener("input", ev => {
+    if (!ev.target.matches(".new-time, .new-duration, .edit-time, .edit-duration")) return;
+    const holder = ev.target.closest(".schedule-fields, .edit-schedule");
+    if (holder) updateScheduleOutput(holder, 'input[type="time"]', 'input[type="number"]');
+  });
+  $("rForm").addEventListener("input", () => updateScheduleOutput($("rForm"), "#rt-time", "#rt-duration"));
+  $("rList").addEventListener("input", ev => {
+    if (!ev.target.matches(".routine-edit-time, .routine-edit-duration")) return;
+    const holder = ev.target.closest(".edit-schedule");
+    if (holder) updateScheduleOutput(holder, ".routine-edit-time", ".routine-edit-duration");
   });
 
   document.querySelectorAll(".ico").forEach(el => { el.innerHTML = ICON[el.dataset.icon]; });
@@ -749,8 +914,8 @@ body.searching .day-toggle { display: none; }
   $("rChips").innerHTML = SHORT.map((_, i) => chipHtml(i, false)).join("") + '<button type="button" class="chip" aria-pressed="false" data-all="1">Every day</button>';
 
   const row = t => editing === t.id
-    ? `<li data-id="${t.id}"><input class="edit-input" id="edit-field" type="text" maxlength="140" value="${esc(t.t)}" aria-label="Edit task"><button type="button" class="mini" data-act="save">Save</button><button type="button" class="mini" data-act="cancel">Cancel</button></li>`
-    : `<li data-id="${t.id}"${t.d ? ' class="done"' : ""}><button type="button" class="chk" role="checkbox" aria-checked="${t.d}" aria-label="${esc(t.t)}" data-act="toggle">${ICON.check}</button><span class="txt">${esc(t.t)}${t.r ? `<span class="rep" title="Repeats every week">${ICON.repeat}<span class="sr">Repeats every week</span></span>` : ""}</span><button type="button" class="icon" data-act="edit" aria-label="Edit task" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="del" aria-label="Delete task" title="Delete">${ICON.trash}</button></li>`;
+    ? `<li data-id="${t.id}"><div class="edit-stack"><input class="edit-input" id="edit-field" type="text" maxlength="140" value="${esc(t.t)}" aria-label="Edit task"><div class="edit-schedule"><label>Start time<input class="edit-time" type="time" value="${validClock(t.at) ? t.at : ""}"></label><label>Duration in minutes<input class="edit-duration" type="number" min="1" max="1440" step="5" value="${Number.isInteger(t.dur) ? t.dur : ""}" placeholder="60"></label><output class="schedule-end">${esc(endClock(t.at, t.dur))}</output></div></div><button type="button" class="mini" data-act="save">Save</button><button type="button" class="mini" data-act="cancel">Cancel</button></li>`
+    : `<li data-id="${t.id}"${t.d ? ' class="done"' : ""}><button type="button" class="chk" role="checkbox" aria-checked="${t.d}" aria-label="${esc(t.t)}" data-act="toggle">${ICON.check}</button><span class="task-copy"><span class="txt">${esc(t.t)}${t.r ? `<span class="rep" title="Repeats every week">${ICON.repeat}<span class="sr">Repeats every week</span></span>` : ""}</span>${clockLabel(t.at, t.dur) ? `<small class="task-time">${esc(clockLabel(t.at, t.dur))}</small>` : ""}</span><button type="button" class="icon" data-act="edit" aria-label="Edit task" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="del" aria-label="Delete task" title="Delete">${ICON.trash}</button></li>`;
 
   const filterTasks = tasks => tasks.filter(t =>
     (!ui.hideDone || !t.d) && (!searchQuery || t.t.toLocaleLowerCase().includes(searchQuery))
@@ -870,9 +1035,86 @@ body.searching .day-toggle { display: none; }
     $("rCount").textContent = state.routines.length;
     $("rEmpty").hidden = state.routines.length > 0;
     $("rList").innerHTML = state.routines.map(r => routineEditing === r.id
-      ? `<li data-rid="${r.id}"><input class="edit-input" id="r-edit-field" type="text" maxlength="140" value="${esc(r.t)}" aria-label="Edit routine"><button type="button" class="mini" data-act="rsave">Save</button><button type="button" class="mini" data-act="rcancel">Cancel</button></li>`
-      : `<li data-rid="${r.id}"><span class="r-txt">${esc(r.t)}</span><div class="chips" role="group" aria-label="Repeats on">${SHORT.map((_, i) => chipHtml(i, r.days.includes(i))).join("")}</div><div class="r-acts"><button type="button" class="icon" data-act="redit" aria-label="Edit routine" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="rdel" aria-label="Delete routine" title="Delete">${ICON.trash}</button></div></li>`
+      ? `<li data-rid="${r.id}"><div class="r-edit-stack"><input class="edit-input" id="r-edit-field" type="text" maxlength="140" value="${esc(r.t)}" aria-label="Edit routine"><div class="edit-schedule"><label>Start time<input class="routine-edit-time" type="time" value="${validClock(r.at) ? r.at : ""}"></label><label>Duration in minutes<input class="routine-edit-duration" type="number" min="1" max="1440" step="5" value="${Number.isInteger(r.dur) ? r.dur : ""}" placeholder="60"></label><output class="schedule-end">${esc(endClock(r.at, r.dur))}</output></div></div><button type="button" class="mini" data-act="rsave">Save</button><button type="button" class="mini" data-act="rcancel">Cancel</button></li>`
+      : `<li data-rid="${r.id}"><span class="r-row-copy"><span class="r-txt">${esc(r.t)}</span>${clockLabel(r.at, r.dur) ? `<small class="task-time">${esc(clockLabel(r.at, r.dur))}</small>` : ""}</span><div class="chips" role="group" aria-label="Repeats on">${SHORT.map((_, i) => chipHtml(i, r.days.includes(i))).join("")}</div><div class="r-acts"><button type="button" class="icon" data-act="redit" aria-label="Edit routine" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="rdel" aria-label="Delete routine" title="Delete">${ICON.trash}</button></div></li>`
     ).join("");
+  };
+
+  const alertTimers = new Map();
+  const firedAlerts = new Set();
+  let nativeNotificationGranted = null;
+  const renderReminderSettings = () => {
+    const prefs = state.notifications;
+    $("reminderLead").value = String(prefs.lead);
+    $("reminderMessage").value = prefs.message;
+    $("customReminder").value = prefs.custom;
+    $("customReminderWrap").hidden = prefs.message !== "custom";
+    $("reminderBadge").textContent = prefs.enabled ? "On" : "Off";
+    $("reminderToggle").textContent = prefs.enabled ? "Turn alerts off" : "Enable alerts";
+    const nativeNotifications = !!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.spiderNotificationPermission);
+    if (nativeNotifications && nativeNotificationGranted === false) {
+      $("reminderStatus").textContent = "iPhone notifications are not allowed. Enable them for Spider Tasks in Settings.";
+    } else if (nativeNotifications && prefs.enabled && nativeNotificationGranted === true) {
+      $("reminderStatus").textContent = "iPhone alerts are enabled. They can arrive while the app is closed.";
+    } else if (nativeNotifications) {
+      $("reminderStatus").textContent = "Choose a lead time and Spider-sense phrase, then enable iPhone alerts.";
+    } else if (!("Notification" in window)) {
+      $("reminderStatus").textContent = "Notifications are not available in this browser.";
+    } else if (Notification.permission === "denied") {
+      $("reminderStatus").textContent = "Notifications are blocked for this site. Allow them in your browser or iPhone settings.";
+    } else if (prefs.enabled && Notification.permission === "granted") {
+      $("reminderStatus").textContent = "Alerts are enabled here. Keep the site open for browser reminders.";
+    } else if (prefs.enabled) {
+      $("reminderStatus").textContent = "Alerts are enabled for your account; allow notifications on this device to receive them.";
+    } else {
+      $("reminderStatus").textContent = "Choose a lead time and phrase, then enable alerts.";
+    }
+  };
+  const reminderTitle = () => ({
+    suitup: "Suit up, Miles — mission time.",
+    friendly: "Your friendly neighborhood reminder.",
+    leap: "Leap into action.",
+    custom: state.notifications.custom.trim() || "Spider-sense is tingling."
+  })[state.notifications.message];
+  const showTaskNotification = async task => {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const lead = state.notifications.lead;
+    const body = lead ? `${task.t} starts at ${task.at} — in ${lead} minute${lead === 1 ? "" : "s"}.` : `${task.t} starts now.`;
+    const options = { body, tag: `spider-task-${todayKey}-${task.id}`, data: { url: location.href } };
+    try {
+      if ("serviceWorker" in navigator) {
+        const registration = await navigator.serviceWorker.ready;
+        await registration.showNotification(reminderTitle(), options);
+      } else new Notification(reminderTitle(), options);
+    } catch {
+      try { new Notification(reminderTitle(), options); } catch {}
+    }
+  };
+  const publishNativeState = () => {
+    const handler = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.spiderPlannerState;
+    if (!handler) return;
+    try { handler.postMessage({ weeks: state.weeks, notifications: state.notifications }); } catch {}
+  };
+  const scheduleBrowserReminders = () => {
+    alertTimers.forEach(timer => clearTimeout(timer));
+    alertTimers.clear();
+    if (!state.notifications.enabled || !("Notification" in window) || Notification.permission !== "granted") return;
+    const weekdayIndex = (new Date().getDay() + 1) % 7;
+    const todayTasks = state.weeks[curWk] ? state.weeks[curWk].days[weekdayIndex] : [];
+    const now = Date.now();
+    todayTasks.forEach(task => {
+      if (task.d || !validClock(task.at)) return;
+      const key = `${todayKey}:${task.id}`;
+      if (firedAlerts.has(key)) return;
+      const due = new Date(`${todayKey}T${task.at}:00`).getTime() - state.notifications.lead * 60000;
+      if (due <= now || due - now > 2147480000) return;
+      alertTimers.set(key, setTimeout(() => {
+        firedAlerts.add(key);
+        const latestWeek = state.weeks[curWk];
+        const latest = latestWeek && latestWeek.days[weekdayIndex].find(x => x.id === task.id);
+        if (latest && !latest.d && latest.at === task.at) showTaskNotification(latest);
+      }, due - now));
+    });
   };
 
   const applyFocus = () => {
@@ -892,6 +1134,9 @@ body.searching .day-toggle { display: none; }
     if (w) matches = w.days.reduce((n, list) => n + filterTasks(list).length, 0);
     renderRoutines();
     renderWeeklyInsights();
+    renderReminderSettings();
+    scheduleBrowserReminders();
+    publishNativeState();
     $("routine").hidden = !!searchQuery;
     $("syncPanel").hidden = !!searchQuery;
     $("weeklyInsights").hidden = !!searchQuery;
@@ -964,13 +1209,77 @@ body.searching .day-toggle { display: none; }
     renderAll();
   });
 
+  const saveReminderPreferences = () => {
+    state.notifications.lead = Number($("reminderLead").value);
+    state.notifications.message = $("reminderMessage").value;
+    state.notifications.custom = $("customReminder").value.trim().slice(0, 140);
+    commit(true);
+  };
+  $("reminderLead").addEventListener("change", saveReminderPreferences);
+  $("reminderMessage").addEventListener("change", saveReminderPreferences);
+  $("customReminder").addEventListener("change", saveReminderPreferences);
+  $("reminderToggle").addEventListener("click", async () => {
+    if (state.notifications.enabled) {
+      state.notifications.enabled = false;
+      commit(true);
+      return;
+    }
+    const nativePermission = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.spiderNotificationPermission;
+    if (nativePermission) {
+      $("reminderStatus").textContent = "Allow notifications in the iPhone prompt.";
+      nativePermission.postMessage("request");
+      return;
+    }
+    if (!("Notification" in window)) { $("reminderStatus").textContent = "Notifications are not available in this browser."; return; }
+    let permission = Notification.permission;
+    if (permission === "default") {
+      try { permission = await Notification.requestPermission(); } catch { permission = "denied"; }
+    }
+    if (permission !== "granted") {
+      $("reminderStatus").textContent = "Allow notifications for this site in your browser or iPhone settings, then try again.";
+      return;
+    }
+    state.notifications.enabled = true;
+    commit(true);
+  });
+  window.addEventListener("spiderNativeNotificationPermission", ev => {
+    const granted = !!(ev.detail && ev.detail.granted);
+    nativeNotificationGranted = granted;
+    if (granted) {
+      state.notifications.enabled = true;
+      commit(true);
+    } else {
+      $("reminderStatus").textContent = "iPhone notifications are not allowed. Enable them for Spider Tasks in Settings.";
+    }
+  });
+  window.addEventListener("spiderNativeNotificationStatus", ev => {
+    nativeNotificationGranted = !!(ev.detail && ev.detail.granted);
+    renderReminderSettings();
+  });
+
   const saveEdit = (i, t) => {
     const v = $("edit-field").value.trim();
+    const timeInput = document.querySelector(".edit-time");
+    const durationInput = document.querySelector(".edit-duration");
+    const at = timeInput.value;
+    const durationText = durationInput.value.trim();
+    const dur = durationText ? Number(durationText) : null;
+    if ((durationText && (!validClock(at) || !Number.isInteger(dur) || dur < 1 || dur > 1440))) {
+      showToast("Add a start time and a duration from 1 to 1440 minutes.");
+      (validClock(at) ? durationInput : timeInput).focus();
+      return;
+    }
+    const changed = v !== t.t || (at || "") !== (t.at || "") || (dur || null) !== (t.dur || null);
     editing = null;
     pendingFocus = searchQuery && !v.toLocaleLowerCase().includes(searchQuery)
       ? "#taskSearch"
       : 'li[data-id="' + t.id + '"] [data-act="edit"]';
-    if (v && v !== t.t) { t.t = v; commit(true); } else { renderDay(i); applyFocus(); }
+    if (v && changed) {
+      t.t = v;
+      if (validClock(at)) t.at = at; else delete t.at;
+      if (dur) t.dur = dur; else delete t.dur;
+      commit(true);
+    } else { renderDay(i); applyFocus(); }
   };
 
   const removeTask = (i, idx, t) => {
@@ -991,12 +1300,27 @@ body.searching .day-toggle { display: none; }
     const input = s.querySelector(".add input");
     const v = input.value.trim();
     if (!v) return;
+    const at = s.querySelector(".new-time").value;
+    const durationInput = s.querySelector(".new-duration");
+    const durationText = durationInput.value.trim();
+    const dur = durationText ? Number(durationText) : null;
+    if (durationText && (!validClock(at) || !Number.isInteger(dur) || dur < 1 || dur > 1440)) {
+      showToast("Add a start time and a duration from 1 to 1440 minutes.");
+      (validClock(at) ? durationInput : s.querySelector(".new-time")).focus();
+      return;
+    }
     if (searchQuery) {
       searchQuery = "";
       $("taskSearch").value = "";
     }
-    ensureWeek(viewWk).days[i].push({ id: uid(), t: v, d: false });
+    const task = { id: uid(), t: v, d: false };
+    if (validClock(at)) task.at = at;
+    if (dur) task.dur = dur;
+    ensureWeek(viewWk).days[i].push(task);
     input.value = "";
+    s.querySelector(".new-time").value = "";
+    durationInput.value = "";
+    s.querySelector(".schedule-details").open = false;
     pendingFocus = `#add-${i}`;
     commit(true);
   });
@@ -1077,10 +1401,21 @@ body.searching .day-toggle { display: none; }
     ev.preventDefault();
     const text = $("rt-text").value.trim();
     const days = chipsOn($("rChips"));
+    const at = $("rt-time").value;
+    const durationText = $("rt-duration").value.trim();
+    const dur = durationText ? Number(durationText) : null;
     if (!text) { $("rNote").textContent = "Type the task first."; $("rt-text").focus(); return; }
     if (!days.length) { $("rNote").textContent = "Pick at least one day."; return; }
-    act(`Routine added. It repeats ${describe(days)}.`, () => addRoutine(text, days));
+    if (durationText && (!validClock(at) || !Number.isInteger(dur) || dur < 1 || dur > 1440)) {
+      $("rNote").textContent = "Add a start time and a duration from 1 to 1440 minutes.";
+      $("rt-time").focus();
+      return;
+    }
+    act(`Routine added. It repeats ${describe(days)}.`, () => addRoutine(text, days, at, dur));
     $("rt-text").value = "";
+    $("rt-time").value = "";
+    $("rt-duration").value = "";
+    $("rForm").querySelector(".schedule-details").open = false;
     $("rChips").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", "false"));
     $("rNote").textContent = "";
     $("rt-text").focus();
@@ -1089,9 +1424,32 @@ body.searching .day-toggle { display: none; }
   const saveRoutineEdit = id => {
     const r = findRoutine(id);
     const v = $("r-edit-field").value.trim();
+    const at = document.querySelector(".routine-edit-time").value;
+    const durationText = document.querySelector(".routine-edit-duration").value.trim();
+    const dur = durationText ? Number(durationText) : null;
+    if (!r) return;
+    if (durationText && (!validClock(at) || !Number.isInteger(dur) || dur < 1 || dur > 1440)) {
+      showToast("Add a start time and a duration from 1 to 1440 minutes.");
+      return;
+    }
+    const changed = v !== r.t || (at || "") !== (r.at || "") || (dur || null) !== (r.dur || null);
     routineEditing = null;
     pendingFocus = `li[data-rid="${id}"] [data-act="redit"]`;
-    if (r && v && v !== r.t) renameRoutine(id, v); else { renderRoutines(); applyFocus(); }
+    if (v && changed) {
+      r.t = v;
+      if (validClock(at)) r.at = at; else delete r.at;
+      if (dur) r.dur = dur; else delete r.dur;
+      Object.keys(state.weeks).forEach(wk => state.weeks[wk].days.forEach((list, i) => {
+        if (!upcoming(wk, i)) return;
+        list.forEach(t => {
+          if (t.r !== id) return;
+          t.t = r.t;
+          if (validClock(at)) t.at = at; else delete t.at;
+          if (dur) t.dur = dur; else delete t.dur;
+        });
+      }));
+      commit(true);
+    } else { renderRoutines(); applyFocus(); }
   };
 
   $("rList").addEventListener("click", ev => {
@@ -1135,12 +1493,14 @@ body.searching .day-toggle { display: none; }
 
   const adopt = d => {
     state = normalize(JSON.parse(JSON.stringify(d)));
+    if (remote.bindFeed && state.widgetFeedId) remote.bindFeed(state.widgetFeedId);
     editing = null;
     routineEditing = null;
     syncWeeks();
     hideToast();
     saveLocal();
     renderAll();
+    if (remote.live && remote.ownerUid && remote.feedRef) scheduleRemote(0);
   };
 
   const onRemote = snap => {
@@ -1151,7 +1511,23 @@ body.searching .day-toggle { display: none; }
     if (!valid) {
       if (hasContent()) scheduleRemote(0);
     } else if (d.u > state.u) adopt(d);
+    else if (!state.widgetFeedId && d.widgetFeedId) adopt(d);
     else if (d.u < state.u) scheduleRemote(0);
+    if (remote.ownerUid && !state.widgetFeedId) {
+      state.widgetFeedId = makeWidgetFeedId();
+      if (remote.bindFeed) remote.bindFeed(state.widgetFeedId);
+      commit(true);
+      return;
+    }
+    if (remote.bindFeed && state.widgetFeedId) remote.bindFeed(state.widgetFeedId);
+    if (remote.feedRef && !remote.feedLoaded) scheduleRemote(0);
+    if (remote.pendingWidgetSnapshot) {
+      const pendingSnapshot = remote.pendingWidgetSnapshot;
+      remote.pendingWidgetSnapshot = null;
+      onWidgetCompletions(pendingSnapshot);
+    }
+    if (remote.widgetSyncPending) scheduleRemote(0);
+    renderWidgetConnection();
     setSync();
   };
   const onRemoteErr = err => {
@@ -1163,10 +1539,58 @@ body.searching .day-toggle { display: none; }
     setSync();
   };
 
+  const onWidgetFeedDoc = snap => {
+    if (snap.metadata && snap.metadata.fromCache) return;
+    if (!snap.exists()) {
+      remote.feedLoaded = false;
+      if (remote.live && remote.feedRef) scheduleRemote(0);
+      return;
+    }
+    remote.feedLoaded = true;
+    if (remote.completionUnsub || !remote.ownerUid || !remote.feedId || !remote.watchCompletions) return;
+    remote.watchCompletions(remote.feedId);
+  };
+
+  const onWidgetCompletions = snap => {
+    if (snap.metadata && snap.metadata.fromCache) return;
+    if (!remote.live) { remote.pendingWidgetSnapshot = snap; return; }
+    const weekdayIndex = (new Date().getDay() + 1) % 7;
+    const todayTasks = state.weeks[curWk] ? state.weeks[curWk].days[weekdayIndex] : [];
+    let changed = false;
+    snap.docs.forEach(doc => {
+      const data = doc.data();
+      if (typeof data.done !== "boolean") return;
+      remote.pendingWidgetDeletes.add(doc.id);
+      remote.widgetSyncPending = true;
+      const task = todayTasks.find(item => item.id === doc.id);
+      if (task && task.d !== data.done) {
+        task.d = data.done;
+        changed = true;
+      }
+    });
+    if (changed) commit(true);
+    if (remote.live && remote.widgetSyncPending) scheduleRemote(changed ? 700 : 0);
+  };
+
   const clearRemote = () => {
     if (remote.unsub) { remote.unsub(); remote.unsub = null; }
+    if (remote.feedUnsub) { remote.feedUnsub(); remote.feedUnsub = null; }
+    if (remote.completionUnsub) { remote.completionUnsub(); remote.completionUnsub = null; }
     clearTimeout(remote.timer);
     remote.ref = null;
+    remote.feedRef = null;
+    remote.feedId = null;
+    remote.makeFeedRef = null;
+    remote.makeCompletionRef = null;
+    remote.deleteCompletion = null;
+    remote.bindFeed = null;
+    remote.watchCompletions = null;
+    remote.feedLoaded = false;
+    remote.pendingWidgetSnapshot = null;
+    remote.pendingWidgetDeletes = new Set();
+    remote.widgetSyncPending = false;
+    remote.ownerUid = null;
+    remote.feedError = false;
     remote.live = false;
     remote.dead = false;
     remote.busy = false;
@@ -1204,6 +1628,14 @@ body.searching .day-toggle { display: none; }
     }
   };
 
+  const renderWidgetConnection = () => {
+    const box = $("widgetConnect");
+    if (!box) return;
+    const ready = !!remote.ownerUid && !!state.widgetFeedId;
+    box.hidden = !ready;
+    if (ready) $("widgetCode").textContent = state.widgetFeedId;
+  };
+
   const connectFirebase = async config => {
     if (!config || typeof config !== "object" || !config.apiKey || !config.projectId || !config.appId) {
       $("syncForm").hidden = true;
@@ -1227,6 +1659,25 @@ body.searching .day-toggle { display: none; }
         clearRemote();
         setAccountView(user);
         if (user) {
+          remote.ownerUid = user.uid;
+          remote.makeFeedRef = id => dbMod.doc(db, "widgetFeeds", id);
+          remote.makeCompletionRef = (feedId, taskId) => dbMod.doc(db, "widgetFeeds", feedId, "completions", taskId);
+          remote.deleteCompletion = taskId => dbMod.deleteDoc(remote.makeCompletionRef(remote.feedId, taskId));
+          remote.watchCompletions = feedId => {
+            if (remote.completionUnsub) return;
+            const completions = dbMod.collection(db, "widgetFeeds", feedId, "completions");
+            remote.completionUnsub = dbMod.onSnapshot(completions, { includeMetadataChanges: true }, onWidgetCompletions, onRemoteErr);
+          };
+          remote.bindFeed = feedId => {
+            if (!feedId || remote.feedId === feedId) return;
+            if (remote.feedUnsub) { remote.feedUnsub(); remote.feedUnsub = null; }
+            if (remote.completionUnsub) { remote.completionUnsub(); remote.completionUnsub = null; }
+            remote.feedId = feedId;
+            remote.feedRef = remote.makeFeedRef(feedId);
+            remote.feedLoaded = false;
+            remote.feedUnsub = dbMod.onSnapshot(remote.feedRef, { includeMetadataChanges: true }, onWidgetFeedDoc, onRemoteErr);
+          };
+          if (state.widgetFeedId) remote.bindFeed(state.widgetFeedId);
           const ref = dbMod.doc(db, "users", user.uid, "planner", "state");
           remote.ref = { set: data => dbMod.setDoc(ref, data) };
           remote.unsub = dbMod.onSnapshot(ref, { includeMetadataChanges: true }, snap => {
@@ -1237,6 +1688,7 @@ body.searching .day-toggle { display: none; }
           $("syncHelp").textContent = "Sign in with the same account on your computer and iPhone to sync your tasks.";
           $("syncHelp").classList.remove("sync-ok", "sync-error");
         }
+        renderWidgetConnection();
         setSync();
       }, onRemoteErr);
 
@@ -1327,6 +1779,12 @@ body.searching .day-toggle { display: none; }
   $("exportBackup").addEventListener("click", exportBackup);
   $("importBackup").addEventListener("click", () => $("backupFile").click());
   $("backupFile").addEventListener("change", ev => importBackup(ev.target.files && ev.target.files[0]));
+  $("copyWidgetCode").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(state.widgetFeedId);
+      showToast("Widget connection code copied.");
+    } catch { showToast("Select the widget code above and copy it."); }
+  });
 
   const tick = () => {
     const n = new Date();
@@ -1337,7 +1795,7 @@ body.searching .day-toggle { display: none; }
     curWk = keyOf(weekStart(n));
     if (viewWk === was) viewWk = curWk;
     syncWeeks();
-    commit(false);
+    commit(true);
   };
   const armMidnight = () => {
     const n = new Date();

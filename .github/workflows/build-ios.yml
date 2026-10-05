@@ -1,0 +1,49 @@
+name: Build iPhone app
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate --spec ios/project.yml --project ios
+
+      - name: Build app and widget without a signing certificate
+        run: >-
+          xcodebuild
+          -project ios/SpiderTasks.xcodeproj
+          -scheme SpiderTasks
+          -configuration Release
+          -sdk iphoneos
+          -derivedDataPath build
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGN_IDENTITY=""
+          build
+
+      - name: Package installable app bundle
+        run: |
+          mkdir -p dist/Payload
+          cp -R build/Build/Products/Release-iphoneos/SpiderTasks.app dist/Payload/SpiderTasks.app
+          cd dist
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent Payload SpiderTasks-unsigned.ipa
+
+      - name: Upload app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: spider-tasks-ios
+          path: dist/SpiderTasks-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 7
