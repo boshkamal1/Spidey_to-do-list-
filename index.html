@@ -169,7 +169,7 @@ h1 {
 .focus-bar { display: none; }
 body.focus-mode { padding-block-start: 12px; }
 body.focus-mode .page > .top,
-body.focus-mode .page > .routine,
+body.focus-mode .page > .routine:not(.quick-add-panel),
 body.focus-mode .page > .days > .day:not(.today) { display: none !important; }
 body.focus-mode .focus-bar { position: sticky; top: 0; z-index: 15; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding: 10px 12px; background: var(--panel); border: 2px solid var(--cyan); box-shadow: 4px 4px 0 var(--violet); font-weight: 700; }
 body.focus-mode .focus-bar span { color: var(--cyan); font-family: var(--font-display); font-size: 1.2rem; text-transform: uppercase; }
