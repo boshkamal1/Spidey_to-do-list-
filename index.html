@@ -44,7 +44,7 @@ html[data-theme="comic"] {
   color-scheme: light;
 }
 html[data-theme="friendly"] {
-  --bg: #dceaf4;
+  --bg: #cbddea;
   --panel: #ffffff;
   --panel-2: #f4fafe;
   --fg: #17324d;
@@ -53,8 +53,8 @@ html[data-theme="friendly"] {
   --red: #e84a5f;
   --red-fill: #c92f47;
   --red-deep: #8c2538;
-  --cyan: #55bdeb;
-  --violet: #377fa7;
+  --cyan: #24769c;
+  --violet: #2e6689;
   --badge-ink: #17324d;
   color-scheme: light;
 }
@@ -164,21 +164,10 @@ h1 {
 .week-row strong { color: var(--fg); font-variant-numeric: tabular-nums; }
 .bar { height: 12px; background: var(--panel-2); border: 2px solid var(--line); transform: skewX(-14deg); overflow: hidden; }
 .bar > i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(135deg, var(--red) 0 8px, var(--red-deep) 8px 16px); transition: width .35s ease; }
-.week-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; margin-top: 16px; }
-.search-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; background: var(--panel); border: 2px solid var(--line); padding: 0 10px; }
-.search-wrap .ico { color: var(--cyan); }
-.search-wrap input { width: 100%; min-width: 0; background: transparent; color: var(--fg); border: 0; padding: 9px 2px; outline: 0; }
-.search-wrap input::placeholder { color: var(--muted); }
-.search-wrap:focus-within { border-color: var(--cyan); }
-.search-status { grid-column: 1 / -1; min-height: 1.2em; color: var(--muted); font-size: .85rem; }
-.hide-done[aria-pressed="true"] { background: var(--violet); border-color: var(--violet); color: #fff; }
-.search-empty { margin-top: 20px; }
 .focus-bar { display: none; }
 body.focus-mode { padding-block-start: 12px; }
 body.focus-mode .page > .top,
 body.focus-mode .page > .routine,
-body.focus-mode .page > .week-tools,
-body.focus-mode .page > .search-empty,
 body.focus-mode .page > .days > .day:not(.today) { display: none !important; }
 body.focus-mode .focus-bar { position: sticky; top: 0; z-index: 15; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding: 10px 12px; background: var(--panel); border: 2px solid var(--cyan); box-shadow: 4px 4px 0 var(--violet); font-weight: 700; }
 body.focus-mode .focus-bar span { color: var(--cyan); font-family: var(--font-display); font-size: 1.2rem; text-transform: uppercase; }
@@ -252,7 +241,6 @@ h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 2
 .day.collapsed .day-toggle .ico svg { transform: rotate(-90deg); }
 .day-content { display: block; }
 .day.collapsed .day-content { display: none; }
-body.searching .day-toggle { display: none; }
 .day .bar { height: 8px; margin-block: 12px 16px; }
 .daily-rating { margin-top: 18px; padding: 12px; background: var(--panel-2); border: 2px solid var(--line); }
 .daily-rating-title { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-weight: 700; }
@@ -344,7 +332,6 @@ body.searching .day-toggle { display: none; }
   .r-body { padding-inline: 14px; }
   .sync { margin-inline-start: 0; flex-basis: 100%; }
   .theme-picker { margin-inline-start: 0; }
-  .week-tools { grid-template-columns: 1fr; }
   .sync-form { grid-template-columns: 1fr; }
   .reminder-form { grid-template-columns: 1fr; }
   .sync-panel summary, .transfer-panel summary { padding-inline: 14px; }
@@ -359,7 +346,7 @@ body.searching .day-toggle { display: none; }
   <div class="focus-bar" id="focusBar"><span>Focus mode · Today only</span><button type="button" id="focusExit">Exit focus</button></div>
   <header class="top">
     <p class="kicker" id="kicker"></p>
-    <h1>My Week</h1>
+    <h1>The Week Ahead</h1>
     <div class="nav">
       <button type="button" class="nbtn" id="prevWk" aria-label="Previous week"><span class="ico" data-icon="left"></span>Prev</button>
       <button type="button" class="nbtn" id="thisWk">This week</button>
@@ -378,12 +365,6 @@ body.searching .day-toggle { display: none; }
       <div class="bar"><i id="weekBar"></i></div>
     </div>
   </header>
-  <div class="week-tools">
-    <label class="search-wrap"><span class="ico" aria-hidden="true">⌕</span><span class="sr">Search this week’s tasks</span><input type="search" id="taskSearch" placeholder="Search this week’s tasks" autocomplete="off"></label>
-    <button type="button" class="nbtn hide-done" id="hideDone" aria-pressed="false">Hide completed</button>
-    <span class="search-status" id="searchStatus" aria-live="polite"></span>
-  </div>
-
   <details class="routine sync-panel" id="syncPanel">
     <summary>
       <span class="r-title">☁ Account sync</span>
@@ -445,7 +426,7 @@ body.searching .day-toggle { display: none; }
     </div>
   </details>
 
-  <details class="routine reminder-options" id="reminderPanel">
+  <details class="routine reminder-options" id="reminderPanel" hidden>
     <summary>
       <span class="r-title">🕷 Spider-sense alerts</span>
       <span class="r-count" id="reminderBadge">Off</span>
@@ -481,7 +462,7 @@ body.searching .day-toggle { display: none; }
     </div>
   </details>
 
-  <details class="routine transfer-panel" id="transferPanel">
+  <details class="routine transfer-panel" id="transferPanel" hidden>
     <summary>
       <span class="r-title">⇧ Backup &amp; restore</span>
       <span class="chev ico" data-icon="down"></span>
@@ -495,7 +476,6 @@ body.searching .day-toggle { display: none; }
       </div>
     </div>
   </details>
-  <p class="empty search-empty" id="searchEmpty" role="status" hidden>No tasks match your search this week.</p>
   <div class="days" id="days"></div>
 </main>
 <div class="toast" id="toast" role="status" hidden></div>
@@ -590,13 +570,12 @@ body.searching .day-toggle { display: none; }
 
   let lsOK = true;
   const loadUi = () => {
-    const ui = { theme: "miles", focusMode: false, hideDone: false, collapsed: {} };
+    const ui = { theme: "miles", focusMode: false, collapsed: {} };
     try {
       const saved = JSON.parse(localStorage.getItem(UI_KEY) || "null");
       if (saved && ["miles", "comic", "friendly"].includes(saved.theme)) ui.theme = saved.theme;
       else if (saved && ["classic", "minimal"].includes(saved.theme)) ui.theme = "friendly";
       if (saved && typeof saved.focusMode === "boolean") ui.focusMode = saved.focusMode;
-      if (saved && typeof saved.hideDone === "boolean") ui.hideDone = saved.hideDone;
       if (saved && saved.collapsed && typeof saved.collapsed === "object") ui.collapsed = saved.collapsed;
     } catch {}
     return ui;
@@ -694,7 +673,6 @@ body.searching .day-toggle { display: none; }
   let viewWk = curWk;
   let editing = null;
   let routineEditing = null;
-  let searchQuery = "";
   let dragState = null;
   let pendingFocus = null;
   let pendingTaskRating = null;
@@ -1043,22 +1021,17 @@ body.searching .day-toggle { display: none; }
     ? `<li data-id="${t.id}"><div class="edit-stack"><input class="edit-input" id="edit-field" type="text" maxlength="140" value="${esc(t.t)}" aria-label="Edit task"><div class="edit-schedule"><label>Start time<input class="edit-time" type="time" value="${validClock(t.at) ? t.at : ""}"></label><label>Duration in minutes<input class="edit-duration" type="number" min="1" max="1440" step="5" value="${Number.isInteger(t.dur) ? t.dur : ""}" placeholder="60"></label><output class="schedule-end">${esc(endClock(t.at, t.dur))}</output></div><div class="edit-meta-fields"><label>Category<select class="edit-category">${categoryOptions(t.category || "")}</select></label><label>Priority<select class="edit-priority">${priorityOptions(t.priority || "normal")}</select></label></div></div><button type="button" class="mini" data-act="save">Save</button><button type="button" class="mini" data-act="cancel">Cancel</button></li>`
     : `<li data-id="${t.id}"${t.d ? ' class="done"' : ""}><button type="button" class="icon drag-handle" data-act="drag" aria-label="Drag to reorder ${esc(t.t)}" title="Hold and drag to reorder" draggable="false">⠿</button><button type="button" class="chk" role="checkbox" aria-checked="${t.d}" aria-label="${esc(t.t)}" data-act="toggle">${ICON.check}</button><span class="task-copy"><span class="txt">${esc(t.t)}${t.r ? `<span class="rep" title="Repeats every week">${ICON.repeat}<span class="sr">Repeats every week</span></span>` : ""}</span>${taskBadges(t)}${Number.isInteger(t.rating) ? `<small class="task-rating">Self-rating ${t.rating}/10</small>` : ""}${clockLabel(t.at, t.dur) ? `<small class="task-time">${esc(clockLabel(t.at, t.dur))}</small>` : ""}</span><button type="button" class="icon" data-act="edit" aria-label="Edit task" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="del" aria-label="Delete task" title="Delete">${ICON.trash}</button></li>`;
 
-  const filterTasks = tasks => tasks.filter(t =>
-    (!ui.hideDone || !t.d) && (!searchQuery || t.t.toLocaleLowerCase().includes(searchQuery))
-  );
-
   const renderDay = i => {
     const s = sections[i];
     const d = addDays(fromKey(viewWk), i);
     const dk = keyOf(d);
     s.dataset.date = dk;
-    const collapsed = !searchQuery && !!ui.collapsed[dk];
+    const collapsed = !!ui.collapsed[dk];
     s.classList.toggle("collapsed", collapsed);
     const w = state.weeks[viewWk];
     const tasks = w ? w.days[i] : [];
     const dailyRating = w && Array.isArray(w.dailyRatings) ? w.dailyRatings[i] : null;
-    const shown = filterTasks(tasks);
-    s.hidden = !!searchQuery && shown.length === 0;
+    const shown = tasks;
     s.classList.toggle("today", dk === todayKey);
     s.classList.toggle("past", dk < todayKey);
     const t = s.querySelector("time");
@@ -1087,8 +1060,8 @@ body.searching .day-toggle { display: none; }
     dayRating.hidden = dk > todayKey;
     dayRating.querySelector(".daily-rating-slider").value = String(Number.isInteger(dailyRating) ? dailyRating : 5);
     dayRating.querySelector(".daily-rating-value").textContent = Number.isInteger(dailyRating) ? `${dailyRating} / 10` : "Not rated";
-    ul.querySelectorAll(".drag-handle").forEach(handle => { handle.hidden = !!searchQuery || !!editing || shown.length < 2; });
-    if (!searchQuery && !editing && shown.length > 1) {
+    ul.querySelectorAll(".drag-handle").forEach(handle => { handle.hidden = !!editing || shown.length < 2; });
+    if (!editing && shown.length > 1) {
       const hint = document.createElement("p");
       hint.className = "reorder-hint";
       hint.textContent = "Hold the grip and drag to set the order.";
@@ -1098,11 +1071,6 @@ body.searching .day-toggle { display: none; }
       const p = document.createElement("p");
       p.className = "empty";
       p.textContent = "Nothing planned.";
-      ul.after(p);
-    } else if (!shown.length) {
-      const p = document.createElement("p");
-      p.className = "empty";
-      p.textContent = searchQuery ? "No matching tasks on this day." : "All completed tasks are hidden.";
       ul.after(p);
     }
     return shown.length;
@@ -1306,31 +1274,14 @@ body.searching .day-toggle { display: none; }
 
   const renderAll = () => {
     renderHeader();
-    let matches = 0;
     sections.forEach((_, i) => renderDay(i));
-    const w = state.weeks[viewWk];
-    if (w) matches = w.days.reduce((n, list) => n + filterTasks(list).length, 0);
     renderRoutines();
     renderReminderSettings();
     scheduleBrowserReminders();
     publishNativeState();
-    $("routine").hidden = !!searchQuery;
-    $("syncPanel").hidden = !!searchQuery;
-    $("transferPanel").hidden = !!searchQuery;
-    $("searchEmpty").hidden = !searchQuery || matches > 0;
-    const hiddenMatches = searchQuery && ui.hideDone && w
-      ? w.days.reduce((n, list) => n + list.filter(t => t.t.toLocaleLowerCase().includes(searchQuery)).length, 0)
-      : 0;
-    $("searchEmpty").textContent = hiddenMatches > 0
-      ? "Matching tasks are completed and currently hidden."
-      : "No tasks match your search this week.";
-    $("searchStatus").textContent = searchQuery ? String(matches) + (matches === 1 ? " matching task" : " matching tasks") : "";
-    $("hideDone").setAttribute("aria-pressed", String(ui.hideDone));
-    $("hideDone").textContent = ui.hideDone ? "Show completed" : "Hide completed";
     document.documentElement.dataset.theme = ui.theme;
-    document.querySelector('meta[name="theme-color"]').content = ({ miles: "#0a0710", comic: "#f5ead8", friendly: "#dceaf4" })[ui.theme];
+    document.querySelector('meta[name="theme-color"]').content = ({ miles: "#0a0710", comic: "#f5ead8", friendly: "#cbddea" })[ui.theme];
     document.body.classList.toggle("focus-mode", ui.focusMode);
-    document.body.classList.toggle("searching", !!searchQuery);
     document.querySelectorAll("[data-theme-choice]").forEach(b => {
       b.setAttribute("aria-pressed", String(b.dataset.themeChoice === ui.theme));
     });
@@ -1353,8 +1304,6 @@ body.searching .day-toggle { display: none; }
       viewWk = curWk;
       editing = null;
       routineEditing = null;
-      searchQuery = "";
-      $("taskSearch").value = "";
       ui.collapsed[todayKey] = false;
       pendingFocus = ".day.today h2";
     } else {
@@ -1366,15 +1315,6 @@ body.searching .day-toggle { display: none; }
   $("focusExit").addEventListener("click", () => {
     ui.focusMode = false;
     pendingFocus = "#focusToday";
-    saveUi();
-    renderAll();
-  });
-  $("taskSearch").addEventListener("input", ev => {
-    searchQuery = ev.target.value.trim().toLocaleLowerCase();
-    renderAll();
-  });
-  $("hideDone").addEventListener("click", () => {
-    ui.hideDone = !ui.hideDone;
     saveUi();
     renderAll();
   });
@@ -1474,9 +1414,7 @@ body.searching .day-toggle { display: none; }
     }
     const changed = v !== t.t || (at || "") !== (t.at || "") || (dur || null) !== (t.dur || null) || (category || "") !== (t.category || "") || priority !== (t.priority || "normal");
     editing = null;
-    pendingFocus = searchQuery && !v.toLocaleLowerCase().includes(searchQuery)
-      ? "#taskSearch"
-      : 'li[data-id="' + t.id + '"] [data-act="edit"]';
+    pendingFocus = 'li[data-id="' + t.id + '"] [data-act="edit"]';
     if (v && changed) {
       t.t = v;
       if (validClock(at)) t.at = at; else delete t.at;
@@ -1490,7 +1428,7 @@ body.searching .day-toggle { display: none; }
   const removeTask = (i, idx, t) => {
     const extra = t.r ? [{ label: `Stop on ${DAYS[i]}s`, fn: () => stopOnDay(t.r, i) }] : [];
     const msg = t.r ? "Removed for this week. It comes back next week." : "Task deleted.";
-    pendingFocus = searchQuery ? "#taskSearch" : "#add-" + i;
+    pendingFocus = "#add-" + i;
     act(msg, () => {
       state.weeks[viewWk].days[i].splice(idx, 1);
       if (editing === t.id) editing = null;
@@ -1538,10 +1476,6 @@ body.searching .day-toggle { display: none; }
       showToast("Add a start time and a duration from 1 to 1440 minutes.");
       (validClock(at) ? durationInput : s.querySelector(".new-time")).focus();
       return;
-    }
-    if (searchQuery) {
-      searchQuery = "";
-      $("taskSearch").value = "";
     }
     const task = { id: uid(), t: v, d: false };
     if (validClock(at)) task.at = at;
@@ -1594,9 +1528,9 @@ body.searching .day-toggle { display: none; }
       const wasDone = t.d;
       t.d = !t.d;
       if (!t.d) delete t.rating;
-      pendingFocus = filterTasks(w.days[i]).includes(t)
+      pendingFocus = w.days[i].includes(t)
         ? 'li[data-id="' + id + '"] [data-act="toggle"]'
-        : (searchQuery ? "#taskSearch" : "#add-" + i);
+        : "#add-" + i;
       commit(true);
       if (!wasDone && t.d) promptTaskRating({ weekKey: viewWk, dayIndex: i, taskId: id });
     } else if (a === "edit") {
@@ -1615,7 +1549,7 @@ body.searching .day-toggle { display: none; }
 
   daysEl.addEventListener("pointerdown", ev => {
     const handle = ev.target.closest(".drag-handle");
-    if (!handle || handle.hidden || ev.button !== 0 || searchQuery || editing) return;
+    if (!handle || handle.hidden || ev.button !== 0 || editing) return;
     const item = handle.closest("li[data-id]");
     const list = item && item.parentElement;
     if (!item || !list || list.querySelectorAll(":scope > li[data-id]").length < 2) return;
@@ -1658,8 +1592,7 @@ body.searching .day-toggle { display: none; }
     const byId = new Map(tasks.map(task => [task.id, task]));
     const reordered = nextIds.map(id => byId.get(id));
     if (reordered.some(task => !task)) { renderDay(drag.dayIndex); return; }
-    let position = 0;
-    week.days[drag.dayIndex] = tasks.map(task => (!ui.hideDone || !task.d) ? reordered[position++] : task);
+    week.days[drag.dayIndex] = reordered;
     commit(true);
     showToast("Task order saved.");
   };
