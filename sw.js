@@ -1,4 +1,4 @@
-const CACHE = "spider-tasks-pwa-v6";
+const CACHE = "spider-tasks-pwa-v7";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./firebase-config.js", "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("push", event => {
