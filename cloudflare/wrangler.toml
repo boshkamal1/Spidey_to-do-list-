@@ -1,0 +1,15 @@
+name = "spider-tasks-reminders"
+main = "reminder-worker.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+account_id = "8081b386ff3155ee24160e2ab675423b"
+
+[[kv_namespaces]]
+binding = "PUSH_DATA"
+id = "8cf4f8f19d644af39cd46cd0b24306e3"
+
+[triggers]
+crons = ["* * * * *"]
+
+[vars]
+FIREBASE_PROJECT_ID = "spidy-list"

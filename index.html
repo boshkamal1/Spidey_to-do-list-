@@ -43,34 +43,57 @@ html[data-theme="comic"] {
   --badge-ink: #fff;
   color-scheme: light;
 }
-html[data-theme="neon"] {
-  --bg: #090c1c;
-  --panel: #11172a;
-  --panel-2: #1a2240;
-  --fg: #f0f4ff;
-  --muted: #91a0c3;
-  --line: #29385c;
-  --red: #fa3c86;
-  --red-fill: #df2772;
-  --red-deep: #751342;
-  --cyan: #55f4ff;
-  --violet: #6758ff;
+html[data-theme="classic"] {
+  --bg: #eaf1f8;
+  --panel: #ffffff;
+  --panel-2: #dce8f4;
+  --fg: #142b45;
+  --muted: #526b83;
+  --line: #244563;
+  --red: #d9273b;
+  --red-fill: #c91e32;
+  --red-deep: #7c1525;
+  --cyan: #176aa5;
+  --violet: #427db5;
+  --badge-ink: #fff;
+  color-scheme: light;
+}
+html[data-theme="minimal"] {
+  --bg: #101419;
+  --panel: #171d24;
+  --panel-2: #202832;
+  --fg: #edf1f5;
+  --muted: #a3afbc;
+  --line: #34414e;
+  --red: #e64b5d;
+  --red-fill: #bd3546;
+  --red-deep: #762632;
+  --cyan: #75a9d8;
+  --violet: #8294a8;
   color-scheme: dark;
 }
-html[data-theme="verse"] {
-  --bg: #11101b;
-  --panel: #1c192a;
-  --panel-2: #292438;
-  --fg: #fff7e8;
-  --muted: #c0b4c9;
-  --line: #55425d;
-  --red: #ff4d87;
-  --red-fill: #e93672;
-  --red-deep: #7b2048;
-  --cyan: #73e4d2;
-  --violet: #ffc857;
-  --badge-ink: #17111e;
-  color-scheme: dark;
+html[data-theme="minimal"] h1,
+html[data-theme="minimal"] h2 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+html[data-theme="minimal"] header.top::before { opacity: 0; }
+html[data-theme="minimal"] .day,
+html[data-theme="minimal"] .routine,
+html[data-theme="minimal"] .transfer-panel,
+html[data-theme="minimal"] .sync-panel {
+  box-shadow: none;
+  border-color: var(--line);
+}
+html[data-theme="minimal"] .day.today { box-shadow: inset 3px 0 var(--red); }
+html[data-theme="minimal"] .bar,
+html[data-theme="minimal"] .date,
+html[data-theme="minimal"] .r-count,
+html[data-theme="minimal"] .chip[aria-pressed="true"],
+html[data-theme="minimal"] .theme-btn[aria-pressed="true"] {
+  transform: none;
 }
 * { box-sizing: border-box; }
 body {
@@ -144,40 +167,12 @@ h1 {
 .search-wrap:focus-within { border-color: var(--cyan); }
 .search-status { grid-column: 1 / -1; min-height: 1.2em; color: var(--muted); font-size: .85rem; }
 .hide-done[aria-pressed="true"] { background: var(--violet); border-color: var(--violet); color: #fff; }
-.weekly-insights { margin-top: 24px; padding: 18px; background: var(--panel); border: 2px solid var(--line); box-shadow: 6px 6px 0 var(--line); }
-.weekly-insights > summary { list-style: none; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.weekly-insights > summary::-webkit-details-marker { display: none; }
-.weekly-insights[open] .chev { transform: rotate(180deg); }
-.recap-mark { color: var(--red); font-size: 1.5rem; line-height: 1; }
-.recap-count { background: var(--violet); color: var(--badge-ink); font-weight: 800; font-size: .82rem; padding: 1px 10px; transform: skewX(-10deg); font-variant-numeric: tabular-nums; }
-.weekly-insights .chev { margin-inline-start: auto; }
-.insights-body { display: grid; gap: 0; padding-top: 12px; }
-.insights-heading, .achievement-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 14px; }
-.insights-title, .achievement-title { margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: .03em; }
-.insights-title { font-size: 1.8rem; line-height: 1.1; }
-.achievement-title { font-size: 1.35rem; }
-.insights-note { margin: 4px 0 0; color: var(--muted); }
-.summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
-.stat { min-width: 0; padding: 10px; background: var(--panel-2); border: 2px solid var(--line); }
-.stat strong { display: block; color: var(--cyan); font-family: var(--font-display); font-size: 1.6rem; font-weight: 400; line-height: 1; overflow-wrap: anywhere; }
-.stat span { display: block; margin-top: 5px; color: var(--muted); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
-.achievement-heading { margin-top: 18px; }
-.achievement-count { color: var(--muted); font-size: .85rem; font-weight: 700; }
-.achievement-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; list-style: none; margin: 10px 0 0; padding: 0; }
-.achievement { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 9px 10px; background: var(--panel-2); border: 2px dashed var(--line); opacity: .55; }
-.achievement.unlocked { border-style: solid; border-color: var(--cyan); opacity: 1; }
-.achievement-mark { flex: none; width: 30px; height: 30px; display: grid; place-items: center; color: var(--red); border: 2px solid currentColor; font-size: 1rem; font-weight: 800; }
-.achievement.unlocked .achievement-mark { background: var(--red-fill); color: #fff; border-color: var(--red-fill); }
-.achievement strong, .achievement small { display: block; }
-.achievement strong { font-size: .92rem; }
-.achievement small { color: var(--muted); font-size: .78rem; line-height: 1.25; }
 .search-empty { margin-top: 20px; }
 .focus-bar { display: none; }
 body.focus-mode { padding-block-start: 12px; }
 body.focus-mode .page > .top,
 body.focus-mode .page > .routine,
 body.focus-mode .page > .week-tools,
-body.focus-mode .page > .weekly-insights,
 body.focus-mode .page > .search-empty,
 body.focus-mode .page > .days > .day:not(.today) { display: none !important; }
 body.focus-mode .focus-bar { position: sticky; top: 0; z-index: 15; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding: 10px 12px; background: var(--panel); border: 2px solid var(--cyan); box-shadow: 4px 4px 0 var(--violet); font-weight: 700; }
@@ -254,6 +249,21 @@ h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 2
 .day.collapsed .day-content { display: none; }
 body.searching .day-toggle { display: none; }
 .day .bar { height: 8px; margin-block: 12px 16px; }
+.daily-rating { margin-top: 18px; padding: 12px; background: var(--panel-2); border: 2px solid var(--line); }
+.daily-rating-title { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-weight: 700; }
+.daily-rating-title output { color: var(--cyan); font-variant-numeric: tabular-nums; }
+.daily-rating p { margin: 4px 0 8px; color: var(--muted); font-size: .9rem; }
+.rating-slider { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+.rating-dialog .rating-slider { grid-template-columns: auto minmax(0, 1fr) auto auto; }
+.rating-slider input[type="range"] { width: 100%; min-width: 0; accent-color: var(--red); }
+.rating-dialog { width: min(420px, calc(100vw - 32px)); padding: 0; color: var(--fg); background: var(--panel); border: 2px solid var(--cyan); box-shadow: 8px 8px 0 var(--violet); }
+.rating-dialog::backdrop { background: rgba(0, 0, 0, .72); }
+.rating-dialog form { display: grid; gap: 14px; padding: 20px; }
+.rating-dialog h2 { font-size: 1.7rem; text-shadow: none; }
+.rating-dialog-task { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+.rating-dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.rating-dialog-actions button { padding: 8px 12px; border: 2px solid var(--line); background: var(--red-fill); color: #fff; font-weight: 700; }
+.rating-dialog-actions button.secondary { background: var(--panel-2); color: var(--fg); }
 .add { display: flex; gap: 8px; min-width: 0; }
 .add input { flex: 1; min-width: 0; background: var(--bg); color: var(--fg); border: 2px solid var(--line); padding: 10px 12px; }
 .add input::placeholder { color: var(--muted); }
@@ -266,12 +276,26 @@ body.searching .day-toggle { display: none; }
 .schedule-details summary { color: var(--cyan); cursor: pointer; font-size: .88rem; font-weight: 700; }
 .schedule-fields { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 12px; margin-top: 8px; }
 .schedule-fields label, .edit-schedule label { display: grid; gap: 3px; color: var(--muted); font-size: .78rem; font-weight: 700; }
-.schedule-fields input, .edit-schedule input { width: 132px; min-width: 0; background: var(--bg); color: var(--fg); border: 2px solid var(--line); padding: 6px 8px; }
+.schedule-fields input, .edit-schedule input, .task-meta-fields select, .edit-meta-fields select { width: 132px; min-width: 0; background: var(--bg); color: var(--fg); border: 2px solid var(--line); padding: 6px 8px; }
 .schedule-fields input[type="number"], .edit-schedule input[type="number"] { width: 112px; }
+.task-meta-fields, .edit-meta-fields { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 12px; margin-top: 8px; }
+.edit-meta-fields { margin-top: 0; }
+.task-meta-fields label, .edit-meta-fields label { display: grid; gap: 3px; color: var(--muted); font-size: .78rem; font-weight: 700; }
 .schedule-end { color: var(--muted); font-size: .82rem; }
 .task-copy { flex: 1; min-width: 0; display: grid; gap: 2px; }
 .task-copy .txt { padding-inline: 4px; }
 .task-time { margin-inline: 4px; color: var(--cyan); font-size: .8rem; font-weight: 700; }
+.task-rating { margin-inline: 4px; color: var(--cyan); font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.task-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-inline: 4px; }
+.task-tag { display: inline-flex; align-items: center; border: 1px solid var(--line); padding: 1px 6px; color: var(--muted); font-size: .7rem; font-weight: 700; line-height: 1.4; }
+.task-tag.priority-high { background: var(--red-fill); border-color: var(--red-fill); color: #fff; }
+.task-tag.priority-low { color: var(--muted); }
+.task-tag.category-work { color: var(--cyan); }
+.task-tag.category-study { color: #c6a5ff; }
+.task-tag.category-personal { color: #ffba76; }
+.carry-button { padding: 5px 9px; background: var(--panel-2); color: var(--cyan); border: 2px solid var(--line); font-size: .78rem; font-weight: 700; }
+.carry-button:hover { border-color: var(--cyan); }
+.carry-button[hidden] { display: none; }
 .edit-stack { flex: 1; min-width: 0; display: grid; gap: 7px; }
 .edit-schedule { display: flex; flex-wrap: wrap; align-items: end; gap: 7px; }
 .edit-schedule .schedule-end { align-self: end; padding-bottom: 7px; }
@@ -284,6 +308,11 @@ body.searching .day-toggle { display: none; }
 .reminder-status { grid-column: 1 / -1; min-height: 1.25em; margin: 0; color: var(--muted); font-size: .85rem; }
 .tasks { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
 .tasks li { display: flex; align-items: center; gap: 8px; background: var(--panel-2); border: 2px solid var(--line); padding: 6px; padding-inline-start: 10px; min-width: 0; }
+.tasks li.dragging { opacity: .5; border-color: var(--cyan); }
+.tasks .drag-handle { width: 40px; height: 40px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; color: var(--cyan); font-size: 1.3rem; font-weight: 700; line-height: 1; }
+.tasks .drag-handle:active { cursor: grabbing; }
+.drag-handle[hidden] { display: none; }
+.reorder-hint { margin: 10px 0 0; color: var(--muted); font-size: .85rem; }
 .chk { flex: none; width: 28px; height: 28px; display: grid; place-items: center; padding: 0; background: var(--bg); color: #fff; border: 2px solid var(--muted); }
 .chk svg { width: 16px; height: 16px; stroke-width: 3; opacity: 0; }
 .chk[aria-checked="true"] { background: var(--red-fill); border-color: var(--red-fill); }
@@ -311,9 +340,6 @@ body.searching .day-toggle { display: none; }
   .sync { margin-inline-start: 0; flex-basis: 100%; }
   .theme-picker { margin-inline-start: 0; }
   .week-tools { grid-template-columns: 1fr; }
-  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .achievement-list { grid-template-columns: 1fr; }
-  .weekly-insights { padding: 14px; }
   .sync-form { grid-template-columns: 1fr; }
   .reminder-form { grid-template-columns: 1fr; }
   .sync-panel summary, .transfer-panel summary { padding-inline: 14px; }
@@ -338,8 +364,8 @@ body.searching .day-toggle { display: none; }
         <span class="theme-label">Style</span>
         <button type="button" class="theme-btn" data-theme-choice="miles" aria-pressed="true">Miles</button>
         <button type="button" class="theme-btn" data-theme-choice="comic" aria-pressed="false">Comic</button>
-        <button type="button" class="theme-btn" data-theme-choice="neon" aria-pressed="false">Neon</button>
-        <button type="button" class="theme-btn" data-theme-choice="verse" aria-pressed="false">Spider-Verse</button>
+        <button type="button" class="theme-btn" data-theme-choice="classic" aria-pressed="false">Classic Red &amp; Blue</button>
+        <button type="button" class="theme-btn" data-theme-choice="minimal" aria-pressed="false">Minimal Dark</button>
       </div>
       <span class="sync" id="sync" data-state="local"></span>
     </div>
@@ -397,11 +423,15 @@ body.searching .day-toggle { display: none; }
         </div>
         <div class="chips" id="rChips" role="group" aria-label="Repeat on"></div>
         <details class="schedule-details">
-          <summary>Add a usual time (optional)</summary>
+          <summary>Usual time, category &amp; priority</summary>
           <div class="schedule-fields">
             <label>Start time<input type="time" id="rt-time"></label>
             <label>Duration in minutes<input type="number" id="rt-duration" min="1" max="1440" step="5" placeholder="60"></label>
             <output class="schedule-end" id="rt-end"></output>
+          </div>
+          <div class="task-meta-fields">
+            <label>Category<select id="rt-category"><option value="">No category</option><option value="work">Work</option><option value="study">Study</option><option value="personal">Personal</option></select></label>
+            <label>Priority<select id="rt-priority"><option value="high">High</option><option value="normal" selected>Normal</option><option value="low">Low</option></select></label>
           </div>
         </details>
         <p class="form-note" id="rNote" aria-live="polite"></p>
@@ -418,7 +448,7 @@ body.searching .day-toggle { display: none; }
       <span class="chev ico" data-icon="down"></span>
     </summary>
     <div class="r-body">
-      <p class="hint">Choose how early reminders arrive and what they say. Browser reminders work while this page is open; the iPhone app can schedule them natively.</p>
+      <p class="hint">Choose how early reminders arrive and what they say. On iPhone, background alerts need the Home Screen app, an account, and the free push service setup.</p>
       <form class="reminder-form" id="reminderForm">
         <label for="reminderLead">Remind me
           <select id="reminderLead">
@@ -447,25 +477,6 @@ body.searching .day-toggle { display: none; }
     </div>
   </details>
 
-  <details class="weekly-insights" id="weeklyInsights" open>
-    <summary>
-      <span class="recap-mark" aria-hidden="true">✦</span>
-      <h2 class="insights-title" id="insightsTitle">Weekly recap</h2>
-      <span class="recap-count" id="recapSummary">0%</span>
-      <span class="chev ico" data-icon="down"></span>
-    </summary>
-    <div class="insights-body">
-      <p class="insights-note" id="summaryNote"></p>
-      <div class="summary-grid">
-        <div class="stat"><strong id="statCompleted">0</strong><span>Completed</span></div>
-        <div class="stat"><strong id="statRemaining">0</strong><span>Left to do</span></div>
-        <div class="stat"><strong id="statDays">0 / 7</strong><span>Active days</span></div>
-        <div class="stat"><strong id="statBest">—</strong><span>Top day</span></div>
-      </div>
-      <div class="achievement-heading"><h3 class="achievement-title">Weekly achievements</h3><span class="achievement-count" id="achievementCount"></span></div>
-      <ul class="achievement-list" id="achievementList"></ul>
-    </div>
-  </details>
   <details class="routine transfer-panel" id="transferPanel">
     <summary>
       <span class="r-title">⇧ Backup &amp; restore</span>
@@ -484,6 +495,15 @@ body.searching .day-toggle { display: none; }
   <div class="days" id="days"></div>
 </main>
 <div class="toast" id="toast" role="status" hidden></div>
+<dialog class="rating-dialog" id="taskRatingDialog" aria-labelledby="taskRatingTitle">
+  <form method="dialog">
+    <h2 id="taskRatingTitle">How well did you do?</h2>
+    <p class="rating-dialog-task" id="taskRatingName"></p>
+    <label for="taskSelfRating">Rate this mission</label>
+    <div class="rating-slider" dir="ltr"><span>0</span><input id="taskSelfRating" type="range" min="0" max="10" step="1" value="5"><output id="taskSelfRatingValue" for="taskSelfRating">5 / 10</output><span>10</span></div>
+    <div class="rating-dialog-actions"><button type="button" class="secondary" id="skipTaskRating">Skip</button><button type="button" id="saveTaskRating">Save rating</button></div>
+  </form>
+</dialog>
 
 <script src="./firebase-config.js"></script>
 <script>
@@ -506,6 +526,11 @@ body.searching .day-toggle { display: none; }
     right: svg('<polyline points="9 18 15 12 9 6"/>'),
     down: svg('<polyline points="6 9 12 15 18 9"/>')
   };
+  const CATEGORIES = { work: "Work", study: "Study", personal: "Personal" };
+  const PRIORITIES = { high: "High", normal: "Normal", low: "Low" };
+  const categoryOptions = selected => `<option value=""${selected === "" ? " selected" : ""}>No category</option>${Object.entries(CATEGORIES).map(([value, label]) => `<option value="${value}"${selected === value ? " selected" : ""}>${label}</option>`).join("")}`;
+  const priorityOptions = selected => Object.entries(PRIORITIES).map(([value, label]) => `<option value="${value}"${selected === value ? " selected" : ""}>${label}</option>`).join("");
+  const taskBadges = task => `<span class="task-tags">${task.category && CATEGORIES[task.category] ? `<small class="task-tag category-${task.category}">${CATEGORIES[task.category]}</small>` : ""}<small class="task-tag priority-${PRIORITIES[task.priority] ? task.priority : "normal"}">${PRIORITIES[task.priority] || "Normal"}</small></span>`;
 
   const pad = n => String(n).padStart(2, "0");
   const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -515,6 +540,14 @@ body.searching .day-toggle { display: none; }
   const dm = d => `${d.getDate()} ${MONTHS[d.getMonth()]}`;
   const fullDate = d => `${DAYS[(d.getDay() + 1) % 7]}, ${d.getDate()} ${LONG_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const validId = value => typeof value === "string" && /^[A-Za-z0-9_-]{1,80}$/.test(value);
+  const validDateKey = value => {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const [year, month, day] = value.split("-").map(Number);
+    if (year < 1000) return false;
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+  };
   const esc = s => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const describe = days => {
     if (days.length === 7) return "every day";
@@ -522,6 +555,15 @@ body.searching .day-toggle { display: none; }
     return "every " + (n.length === 1 ? n[0] : `${n.slice(0, -1).join(", ")} and ${n[n.length - 1]}`);
   };
   const validClock = value => typeof value === "string" && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value);
+  const urlBase64ToUint8Array = value => {
+    const base64 = value.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64 + "=".repeat((4 - base64.length % 4) % 4);
+    return Uint8Array.from(atob(padded), character => character.charCodeAt(0));
+  };
+  const sameBytes = (left, right) => {
+    const a = new Uint8Array(left);
+    return a.length === right.length && a.every((byte, index) => byte === right[index]);
+  };
   const endClock = (start, duration) => {
     if (!validClock(start) || !Number.isInteger(duration) || duration < 1) return "";
     const [h, m] = start.split(":").map(Number);
@@ -547,7 +589,7 @@ body.searching .day-toggle { display: none; }
     const ui = { theme: "miles", focusMode: false, hideDone: false, collapsed: {} };
     try {
       const saved = JSON.parse(localStorage.getItem(UI_KEY) || "null");
-      if (saved && ["miles", "comic", "neon", "verse"].includes(saved.theme)) ui.theme = saved.theme;
+      if (saved && ["miles", "comic", "classic", "minimal"].includes(saved.theme)) ui.theme = saved.theme;
       if (saved && typeof saved.focusMode === "boolean") ui.focusMode = saved.focusMode;
       if (saved && typeof saved.hideDone === "boolean") ui.hideDone = saved.hideDone;
       if (saved && saved.collapsed && typeof saved.collapsed === "object") ui.collapsed = saved.collapsed;
@@ -558,11 +600,22 @@ body.searching .day-toggle { display: none; }
   const saveUi = () => {
     try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch {}
   };
-  const emptyState = () => ({ v: 2, u: 0, routines: [], weeks: {}, notifications: { enabled: false, lead: 10, message: "suitup", custom: "" }, widgetFeedId: "" });
+  const currentTimeZone = () => {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; }
+    catch { return "UTC"; }
+  };
+  const validTimeZone = value => {
+    if (typeof value !== "string" || value.length > 80) return false;
+    try { Intl.DateTimeFormat("en", { timeZone: value }); return true; }
+    catch { return false; }
+  };
+  const emptyState = () => ({ v: 2, u: 0, timeZone: currentTimeZone(), routines: [], weeks: {}, notifications: { enabled: false, lead: 10, message: "suitup", custom: "" }, widgetFeedId: "" });
 
   const normalize = s => {
+    if (!s || typeof s !== "object" || Array.isArray(s)) s = {};
     const out = emptyState();
     out.u = typeof s.u === "number" ? s.u : 0;
+    out.timeZone = validTimeZone(s.timeZone) ? s.timeZone : currentTimeZone();
     const prefs = s.notifications && typeof s.notifications === "object" ? s.notifications : {};
     const leads = [0, 5, 10, 15, 30, 60];
     out.notifications = {
@@ -572,32 +625,55 @@ body.searching .day-toggle { display: none; }
       custom: typeof prefs.custom === "string" ? prefs.custom.slice(0, 140) : ""
     };
     out.widgetFeedId = typeof s.widgetFeedId === "string" && /^[a-f0-9-]{24,40}$/i.test(s.widgetFeedId) ? s.widgetFeedId : "";
+    const routineIds = new Map();
+    const usedIds = new Set();
     (Array.isArray(s.routines) ? s.routines : []).forEach(r => {
-      if (!r || typeof r.id !== "string" || typeof r.t !== "string" || !Array.isArray(r.days)) return;
+      if (!r || !validId(r.id) || typeof r.t !== "string" || !Array.isArray(r.days) || routineIds.has(r.id)) return;
       const ds = r.days.filter((x, i, a) => Number.isInteger(x) && x >= 0 && x <= 6 && a.indexOf(x) === i).sort((a, b) => a - b);
       if (ds.length) {
-        const routine = { id: r.id, t: r.t, days: ds };
+        const id = usedIds.has(r.id) ? uid() : r.id;
+        usedIds.add(id);
+        routineIds.set(r.id, id);
+        const routine = { id, t: r.t.slice(0, 140), days: ds };
         if (validClock(r.at)) routine.at = r.at;
         if (Number.isInteger(r.dur) && r.dur > 0 && r.dur <= 1440) routine.dur = r.dur;
+        if (Object.hasOwn(CATEGORIES, r.category)) routine.category = r.category;
+        routine.priority = Object.hasOwn(PRIORITIES, r.priority) ? r.priority : "normal";
         out.routines.push(routine);
       }
     });
     const ws = s.weeks && typeof s.weeks === "object" ? s.weeks : {};
     Object.keys(ws).forEach(k => {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(k)) return;
+      if (!validDateKey(k)) return;
       const w = ws[k];
       const days = [];
       for (let i = 0; i < 7; i++) {
         const src = w && Array.isArray(w.days) && Array.isArray(w.days[i]) ? w.days[i] : [];
-        days.push(src.filter(t => t && typeof t.id === "string" && typeof t.t === "string").map(t => {
-          const o = { id: t.id, t: t.t, d: !!t.d };
-          if (typeof t.r === "string") o.r = t.r;
+        days.push(src.filter(t => t && typeof t.t === "string").map(t => {
+          const id = validId(t.id) && !usedIds.has(t.id) ? t.id : uid();
+          usedIds.add(id);
+          const o = { id, t: t.t.slice(0, 140), d: t.d === true };
+          if (typeof t.r === "string" && routineIds.has(t.r)) o.r = routineIds.get(t.r);
           if (validClock(t.at)) o.at = t.at;
           if (Number.isInteger(t.dur) && t.dur > 0 && t.dur <= 1440) o.dur = t.dur;
+          if (Object.hasOwn(CATEGORIES, t.category)) o.category = t.category;
+          o.priority = Object.hasOwn(PRIORITIES, t.priority) ? t.priority : "normal";
+          if (o.d && Number.isInteger(t.rating) && t.rating >= 0 && t.rating <= 10) o.rating = t.rating;
           return o;
         }));
       }
-      out.weeks[k] = { days, gen: w && Array.isArray(w.gen) ? w.gen.filter(g => typeof g === "string") : [] };
+      out.weeks[k] = {
+        days,
+        dailyRatings: Array.from({ length: 7 }, (_, i) => {
+          const rating = w && Array.isArray(w.dailyRatings) ? w.dailyRatings[i] : null;
+          return Number.isInteger(rating) && rating >= 0 && rating <= 10 ? rating : null;
+        }),
+        gen: w && Array.isArray(w.gen) ? [...new Set(w.gen.filter(g => {
+          if (typeof g !== "string") return false;
+          const match = /^([A-Za-z0-9_-]{1,80}):([0-6])$/.exec(g);
+          return !!match && routineIds.has(match[1]);
+        }).map(g => `${routineIds.get(g.slice(0, g.lastIndexOf(":")))}:${g.slice(-1)}`))] : []
+      };
     });
     return out;
   };
@@ -614,7 +690,11 @@ body.searching .day-toggle { display: none; }
   let editing = null;
   let routineEditing = null;
   let searchQuery = "";
+  let dragState = null;
   let pendingFocus = null;
+  let pendingTaskRating = null;
+  const taskRatingQueue = [];
+  const taskRatingDialog = $("taskRatingDialog");
   let toastTimer = null;
 
   const loadLocal = () => {
@@ -632,6 +712,7 @@ body.searching .day-toggle { display: none; }
         s.u = 1;
         s.weeks[curWk] = {
           days: old.map(d => (Array.isArray(d) ? d : []).filter(t => t && t.t).map(t => ({ id: String(t.id || uid()), t: String(t.t), d: !!t.d }))),
+          dailyRatings: [null, null, null, null, null, null, null],
           gen: []
         };
         return s;
@@ -643,7 +724,7 @@ body.searching .day-toggle { display: none; }
   probe();
   let state = loadLocal();
 
-  const remote = { ref: null, feedRef: null, feedId: null, makeFeedRef: null, makeCompletionRef: null, deleteCompletion: null, bindFeed: null, watchCompletions: null, ownerUid: null, unsub: null, feedUnsub: null, completionUnsub: null, feedLoaded: false, pendingWidgetSnapshot: null, pendingWidgetDeletes: new Set(), widgetSyncPending: false, live: false, dead: false, busy: false, again: false, pending: false, timer: null, fail: 0, feedError: false };
+  const remote = { ref: null, feedRef: null, feedId: null, makeFeedRef: null, makeCompletionRef: null, deleteCompletion: null, bindFeed: null, watchCompletions: null, registerPushSubscription: null, unregisterPushSubscription: null, syncPushSchedule: null, lastPushScheduleSignature: null, pushSyncState: "idle", pushRetryTimer: null, pushFail: 0, ownerUid: null, unsub: null, feedUnsub: null, completionUnsub: null, feedLoaded: false, pendingWidgetSnapshot: null, pendingWidgetDeletes: new Set(), widgetSyncPending: false, live: false, dead: false, busy: false, again: false, pending: false, timer: null, fail: 0, feedError: false };
 
   const saveLocal = () => {
     if (!lsOK) return;
@@ -689,7 +770,8 @@ body.searching .day-toggle { display: none; }
   const dayKeyOf = (wk, i) => keyOf(addDays(fromKey(wk), i));
   const upcoming = (wk, i) => dayKeyOf(wk, i) >= todayKey;
   const ensureWeek = wk => {
-    if (!state.weeks[wk]) state.weeks[wk] = { days: [[], [], [], [], [], [], []], gen: [] };
+    if (!state.weeks[wk]) state.weeks[wk] = { days: [[], [], [], [], [], [], []], dailyRatings: [null, null, null, null, null, null, null], gen: [] };
+    else if (!Array.isArray(state.weeks[wk].dailyRatings)) state.weeks[wk].dailyRatings = [null, null, null, null, null, null, null];
     return state.weeks[wk];
   };
   const findRoutine = id => state.routines.find(r => r.id === id);
@@ -703,6 +785,8 @@ body.searching .day-toggle { display: none; }
       const gk = `${r.id}:${di}`;
       if (w.gen.includes(gk) || !upcoming(wk, di)) return;
       const task = { id: uid(), t: r.t, d: false, r: r.id };
+      if (r.category) task.category = r.category;
+      task.priority = r.priority || "normal";
       if (validClock(r.at)) task.at = r.at;
       if (Number.isInteger(r.dur)) task.dur = r.dur;
       w.days[di].push(task);
@@ -768,6 +852,26 @@ body.searching .day-toggle { display: none; }
           remote.widgetSyncPending = remote.pendingWidgetDeletes.size > 0;
         } catch { remote.feedError = true; }
       }
+      if (remote.syncPushSchedule) {
+        try {
+          await remote.syncPushSchedule();
+          remote.pushSyncState = "synced";
+          remote.pushFail = 0;
+          clearTimeout(remote.pushRetryTimer);
+          remote.pushRetryTimer = null;
+          renderReminderSettings();
+        } catch {
+          remote.pushSyncState = "error";
+          if (remote.live && remote.pushFail < 4 && !remote.pushRetryTimer) {
+            const delay = [3000, 8000, 20000, 45000][remote.pushFail++];
+            remote.pushRetryTimer = setTimeout(() => {
+              remote.pushRetryTimer = null;
+              scheduleRemote(0);
+            }, delay);
+          }
+          renderReminderSettings();
+        }
+      }
     } catch (e) {
       const code = e && e.code;
       if (code === "unavailable" || code === "resource_exhausted") {
@@ -796,7 +900,7 @@ body.searching .day-toggle { display: none; }
   };
 
   const commit = user => {
-    if (user) { state.u = Date.now(); hideToast(); }
+    if (user) { state.u = Date.now(); state.timeZone = currentTimeZone(); hideToast(); }
     prune();
     saveLocal();
     if (user) scheduleRemote();
@@ -805,8 +909,8 @@ body.searching .day-toggle { display: none; }
 
   const act = (msg, fn, extra = []) => {
     const snap = JSON.stringify(state);
-    fn();
-    showToast(msg, [{
+    const result = fn();
+    showToast(typeof msg === "function" ? msg(result) : msg, [{
       label: "Undo",
       fn: () => { state = normalize(JSON.parse(snap)); editing = null; routineEditing = null; commit(true); }
     }, ...extra]);
@@ -833,8 +937,9 @@ body.searching .day-toggle { display: none; }
     });
   };
 
-  const addRoutine = (text, days, at, dur) => {
-    const routine = { id: uid(), t: text, days };
+  const addRoutine = (text, days, at, dur, category, priority) => {
+    const routine = { id: uid(), t: text, days, priority: PRIORITIES[priority] ? priority : "normal" };
+    if (CATEGORIES[category]) routine.category = category;
     if (validClock(at)) routine.at = at;
     if (Number.isInteger(dur) && dur > 0 && dur <= 1440) routine.dur = dur;
     state.routines.push(routine);
@@ -879,13 +984,18 @@ body.searching .day-toggle { display: none; }
     s.className = "day";
     s.dataset.day = i;
       s.innerHTML = `<span class="stamp">Today</span>
-      <div class="day-head"><h2 tabindex="-1">${name}</h2><time class="date"></time><span class="count"></span><button type="button" class="day-toggle" data-act="collapse" aria-expanded="true"><span class="day-toggle-label">Hide</span><span class="ico" data-icon="down"></span></button></div>
+      <div class="day-head"><h2 tabindex="-1">${name}</h2><time class="date"></time><span class="count"></span><button type="button" class="carry-button" data-act="carry" hidden>Move unfinished to tomorrow</button><button type="button" class="day-toggle" data-act="collapse" aria-expanded="true"><span class="day-toggle-label">Hide</span><span class="ico" data-icon="down"></span></button></div>
       <div class="day-content">
         <div class="bar"><i></i></div>
         <form class="add task-add" autocomplete="off"><input type="text" id="add-${i}" maxlength="140" placeholder="Add a task" aria-label="New task for ${name}"><button type="submit">Add</button>
-          <details class="schedule-details"><summary>Add a time (optional)</summary><div class="schedule-fields"><label>Start time<input type="time" class="new-time"></label><label>Duration in minutes<input type="number" class="new-duration" min="1" max="1440" step="5" placeholder="60"></label><output class="schedule-end"></output></div></details>
+          <details class="schedule-details"><summary>Time, category &amp; priority</summary><div class="schedule-fields"><label>Start time<input type="time" class="new-time"></label><label>Duration in minutes<input type="number" class="new-duration" min="1" max="1440" step="5" placeholder="60"></label><output class="schedule-end"></output></div><div class="task-meta-fields"><label>Category<select class="new-category">${categoryOptions("")}</select></label><label>Priority<select class="new-priority">${priorityOptions("normal")}</select></label></div></details>
         </form>
         <ul class="tasks"></ul>
+        <section class="daily-rating" aria-label="Daily self-rating">
+          <div class="daily-rating-title"><strong>Rate your day</strong><output class="daily-rating-value">Not rated</output></div>
+          <p>How do you rate your day overall?</p>
+          <label class="rating-slider" dir="ltr"><span>0</span><input class="daily-rating-slider" type="range" min="0" max="10" step="1" value="5" aria-label="Rate this day from 0 to 10"><span>10</span></label>
+        </section>
       </div>`;
     daysEl.appendChild(s);
     sections.push(s);
@@ -898,9 +1008,20 @@ body.searching .day-toggle { display: none; }
     if (time && duration && output) output.textContent = endClock(time.value, Number(duration.value));
   };
   daysEl.addEventListener("input", ev => {
+    if (ev.target.matches(".daily-rating-slider")) {
+      ev.target.closest(".daily-rating").querySelector(".daily-rating-value").textContent = `${ev.target.value} / 10`;
+      return;
+    }
     if (!ev.target.matches(".new-time, .new-duration, .edit-time, .edit-duration")) return;
     const holder = ev.target.closest(".schedule-fields, .edit-schedule");
     if (holder) updateScheduleOutput(holder, 'input[type="time"]', 'input[type="number"]');
+  });
+  daysEl.addEventListener("change", ev => {
+    if (!ev.target.matches(".daily-rating-slider")) return;
+    const section = ev.target.closest(".day");
+    const dayIndex = Number(section.dataset.day);
+    ensureWeek(viewWk).dailyRatings[dayIndex] = Number(ev.target.value);
+    commit(true);
   });
   $("rForm").addEventListener("input", () => updateScheduleOutput($("rForm"), "#rt-time", "#rt-duration"));
   $("rList").addEventListener("input", ev => {
@@ -914,8 +1035,8 @@ body.searching .day-toggle { display: none; }
   $("rChips").innerHTML = SHORT.map((_, i) => chipHtml(i, false)).join("") + '<button type="button" class="chip" aria-pressed="false" data-all="1">Every day</button>';
 
   const row = t => editing === t.id
-    ? `<li data-id="${t.id}"><div class="edit-stack"><input class="edit-input" id="edit-field" type="text" maxlength="140" value="${esc(t.t)}" aria-label="Edit task"><div class="edit-schedule"><label>Start time<input class="edit-time" type="time" value="${validClock(t.at) ? t.at : ""}"></label><label>Duration in minutes<input class="edit-duration" type="number" min="1" max="1440" step="5" value="${Number.isInteger(t.dur) ? t.dur : ""}" placeholder="60"></label><output class="schedule-end">${esc(endClock(t.at, t.dur))}</output></div></div><button type="button" class="mini" data-act="save">Save</button><button type="button" class="mini" data-act="cancel">Cancel</button></li>`
-    : `<li data-id="${t.id}"${t.d ? ' class="done"' : ""}><button type="button" class="chk" role="checkbox" aria-checked="${t.d}" aria-label="${esc(t.t)}" data-act="toggle">${ICON.check}</button><span class="task-copy"><span class="txt">${esc(t.t)}${t.r ? `<span class="rep" title="Repeats every week">${ICON.repeat}<span class="sr">Repeats every week</span></span>` : ""}</span>${clockLabel(t.at, t.dur) ? `<small class="task-time">${esc(clockLabel(t.at, t.dur))}</small>` : ""}</span><button type="button" class="icon" data-act="edit" aria-label="Edit task" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="del" aria-label="Delete task" title="Delete">${ICON.trash}</button></li>`;
+    ? `<li data-id="${t.id}"><div class="edit-stack"><input class="edit-input" id="edit-field" type="text" maxlength="140" value="${esc(t.t)}" aria-label="Edit task"><div class="edit-schedule"><label>Start time<input class="edit-time" type="time" value="${validClock(t.at) ? t.at : ""}"></label><label>Duration in minutes<input class="edit-duration" type="number" min="1" max="1440" step="5" value="${Number.isInteger(t.dur) ? t.dur : ""}" placeholder="60"></label><output class="schedule-end">${esc(endClock(t.at, t.dur))}</output></div><div class="edit-meta-fields"><label>Category<select class="edit-category">${categoryOptions(t.category || "")}</select></label><label>Priority<select class="edit-priority">${priorityOptions(t.priority || "normal")}</select></label></div></div><button type="button" class="mini" data-act="save">Save</button><button type="button" class="mini" data-act="cancel">Cancel</button></li>`
+    : `<li data-id="${t.id}"${t.d ? ' class="done"' : ""}><button type="button" class="icon drag-handle" data-act="drag" aria-label="Drag to reorder ${esc(t.t)}" title="Hold and drag to reorder" draggable="false">⠿</button><button type="button" class="chk" role="checkbox" aria-checked="${t.d}" aria-label="${esc(t.t)}" data-act="toggle">${ICON.check}</button><span class="task-copy"><span class="txt">${esc(t.t)}${t.r ? `<span class="rep" title="Repeats every week">${ICON.repeat}<span class="sr">Repeats every week</span></span>` : ""}</span>${taskBadges(t)}${Number.isInteger(t.rating) ? `<small class="task-rating">Self-rating ${t.rating}/10</small>` : ""}${clockLabel(t.at, t.dur) ? `<small class="task-time">${esc(clockLabel(t.at, t.dur))}</small>` : ""}</span><button type="button" class="icon" data-act="edit" aria-label="Edit task" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="del" aria-label="Delete task" title="Delete">${ICON.trash}</button></li>`;
 
   const filterTasks = tasks => tasks.filter(t =>
     (!ui.hideDone || !t.d) && (!searchQuery || t.t.toLocaleLowerCase().includes(searchQuery))
@@ -930,6 +1051,7 @@ body.searching .day-toggle { display: none; }
     s.classList.toggle("collapsed", collapsed);
     const w = state.weeks[viewWk];
     const tasks = w ? w.days[i] : [];
+    const dailyRating = w && Array.isArray(w.dailyRatings) ? w.dailyRatings[i] : null;
     const shown = filterTasks(tasks);
     s.hidden = !!searchQuery && shown.length === 0;
     s.classList.toggle("today", dk === todayKey);
@@ -943,13 +1065,30 @@ body.searching .day-toggle { display: none; }
     toggle.setAttribute("aria-label", `${collapsed ? "Expand" : "Collapse"} ${fullDate(d)}`);
     toggle.title = `${collapsed ? "Show" : "Hide"} ${DAYS[i]}`;
     toggle.querySelector(".day-toggle-label").textContent = collapsed ? "Show" : "Hide";
+    const carryButton = s.querySelector(".carry-button");
+    const unfinished = tasks.filter(task => !task.d).length;
+    carryButton.hidden = dk !== todayKey || unfinished === 0;
+    carryButton.textContent = `Move ${unfinished} unfinished to tomorrow`;
     const done = tasks.filter(x => x.d).length;
     s.querySelector(".count").textContent = tasks.length ? `${done} / ${tasks.length}` : "";
     s.querySelector(".bar > i").style.width = `${tasks.length ? Math.round(done / tasks.length * 100) : 0}%`;
     const ul = s.querySelector("ul");
     const old = s.querySelector(".empty");
     if (old) old.remove();
+    const oldReorderHint = s.querySelector(".reorder-hint");
+    if (oldReorderHint) oldReorderHint.remove();
     ul.innerHTML = shown.map(row).join("");
+    const dayRating = s.querySelector(".daily-rating");
+    dayRating.hidden = dk > todayKey;
+    dayRating.querySelector(".daily-rating-slider").value = String(Number.isInteger(dailyRating) ? dailyRating : 5);
+    dayRating.querySelector(".daily-rating-value").textContent = Number.isInteger(dailyRating) ? `${dailyRating} / 10` : "Not rated";
+    ul.querySelectorAll(".drag-handle").forEach(handle => { handle.hidden = !!searchQuery || !!editing || shown.length < 2; });
+    if (!searchQuery && !editing && shown.length > 1) {
+      const hint = document.createElement("p");
+      hint.className = "reorder-hint";
+      hint.textContent = "Hold the grip and drag to set the order.";
+      ul.after(hint);
+    }
     if (!tasks.length) {
       const p = document.createElement("p");
       p.className = "empty";
@@ -964,53 +1103,43 @@ body.searching .day-toggle { display: none; }
     return shown.length;
   };
 
-  const renderWeeklyInsights = () => {
-    const w = state.weeks[viewWk];
-    const lists = w ? w.days : [[], [], [], [], [], [], []];
-    const all = lists.flat();
-    const total = all.length;
-    const done = all.filter(t => t.d).length;
-    const activeDays = lists.filter(day => day.length > 0).length;
-    const finishedDays = lists.filter(day => day.length > 0 && day.every(t => t.d)).length;
-    const topDay = lists.map((day, i) => ({ i, done: day.filter(t => t.d).length }))
-      .filter(day => day.done > 0).sort((a, b) => b.done - a.done)[0];
-    const percent = total ? Math.round(done / total * 100) : 0;
-    $("recapSummary").textContent = total ? percent + "%" : "—";
-    $("recapSummary").title = total ? done + " of " + total + " tasks completed" : "No tasks planned this week";
-    $("statCompleted").textContent = done;
-    $("statRemaining").textContent = total - done;
-    $("statDays").textContent = String(activeDays) + " / 7";
-    $("statBest").textContent = topDay ? SHORT[topDay.i] : "—";
-    $("statBest").title = topDay ? DAYS[topDay.i] + " · " + topDay.done + " completed" : "No completed tasks yet";
-    $("summaryNote").textContent = total
-      ? "You’ve completed " + done + " of " + total + " planned tasks (" + percent + "%)."
-      : "Add tasks to this week to start your recap.";
-    const badges = [
-      { mark: "✦", title: "First swing", detail: "Complete your first task", unlocked: done >= 1 },
-      { mark: "6", title: "Six pack", detail: "Complete six tasks", unlocked: done >= 6 },
-      { mark: "★", title: "Day slayer", detail: "Finish every task on a day", unlocked: finishedDays > 0 },
-      { mark: "✓", title: "Perfect week", detail: "Complete every task planned", unlocked: total > 0 && done === total }
-    ];
-    const unlocked = badges.filter(b => b.unlocked).length;
-    $("achievementCount").textContent = String(unlocked) + " / " + badges.length + " unlocked";
-    const list = $("achievementList");
-    list.innerHTML = "";
-    badges.forEach(b => {
-      const li = document.createElement("li");
-      li.className = "achievement" + (b.unlocked ? " unlocked" : "");
-      const mark = document.createElement("span");
-      mark.className = "achievement-mark";
-      mark.textContent = b.mark;
-      const copy = document.createElement("span");
-      const title = document.createElement("strong");
-      title.textContent = b.title;
-      const detail = document.createElement("small");
-      detail.textContent = b.detail;
-      copy.append(title, detail);
-      li.append(mark, copy);
-      list.append(li);
-    });
+  const promptTaskRating = reference => {
+    if (pendingTaskRating) {
+      if (!taskRatingQueue.some(item => item.weekKey === reference.weekKey && item.dayIndex === reference.dayIndex && item.taskId === reference.taskId)) taskRatingQueue.push(reference);
+      return;
+    }
+    const week = state.weeks[reference.weekKey];
+    const task = week && week.days[reference.dayIndex] && week.days[reference.dayIndex].find(item => item.id === reference.taskId);
+    if (!task || !task.d) return;
+    pendingTaskRating = reference;
+    $("taskRatingName").textContent = task.t;
+    $("taskSelfRating").value = String(Number.isInteger(task.rating) ? task.rating : 5);
+    $("taskSelfRatingValue").textContent = `${$("taskSelfRating").value} / 10`;
+    taskRatingDialog.showModal();
+    $("taskSelfRating").focus();
   };
+
+  $("taskSelfRating").addEventListener("input", ev => {
+    $("taskSelfRatingValue").textContent = `${ev.target.value} / 10`;
+  });
+  $("saveTaskRating").addEventListener("click", () => {
+    if (!pendingTaskRating) return;
+    const reference = pendingTaskRating;
+    const week = state.weeks[reference.weekKey];
+    const task = week && week.days[reference.dayIndex] && week.days[reference.dayIndex].find(item => item.id === reference.taskId);
+    if (task && task.d) {
+      task.rating = Number($("taskSelfRating").value);
+      pendingFocus = `li[data-id="${reference.taskId}"] [data-act="toggle"]`;
+      commit(true);
+    }
+    taskRatingDialog.close();
+  });
+  $("skipTaskRating").addEventListener("click", () => taskRatingDialog.close());
+  taskRatingDialog.addEventListener("close", () => {
+    pendingTaskRating = null;
+    const next = taskRatingQueue.shift();
+    if (next) setTimeout(() => promptTaskRating(next), 0);
+  });
 
   const renderHeader = () => {
     const s = fromKey(viewWk);
@@ -1035,8 +1164,8 @@ body.searching .day-toggle { display: none; }
     $("rCount").textContent = state.routines.length;
     $("rEmpty").hidden = state.routines.length > 0;
     $("rList").innerHTML = state.routines.map(r => routineEditing === r.id
-      ? `<li data-rid="${r.id}"><div class="r-edit-stack"><input class="edit-input" id="r-edit-field" type="text" maxlength="140" value="${esc(r.t)}" aria-label="Edit routine"><div class="edit-schedule"><label>Start time<input class="routine-edit-time" type="time" value="${validClock(r.at) ? r.at : ""}"></label><label>Duration in minutes<input class="routine-edit-duration" type="number" min="1" max="1440" step="5" value="${Number.isInteger(r.dur) ? r.dur : ""}" placeholder="60"></label><output class="schedule-end">${esc(endClock(r.at, r.dur))}</output></div></div><button type="button" class="mini" data-act="rsave">Save</button><button type="button" class="mini" data-act="rcancel">Cancel</button></li>`
-      : `<li data-rid="${r.id}"><span class="r-row-copy"><span class="r-txt">${esc(r.t)}</span>${clockLabel(r.at, r.dur) ? `<small class="task-time">${esc(clockLabel(r.at, r.dur))}</small>` : ""}</span><div class="chips" role="group" aria-label="Repeats on">${SHORT.map((_, i) => chipHtml(i, r.days.includes(i))).join("")}</div><div class="r-acts"><button type="button" class="icon" data-act="redit" aria-label="Edit routine" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="rdel" aria-label="Delete routine" title="Delete">${ICON.trash}</button></div></li>`
+      ? `<li data-rid="${r.id}"><div class="r-edit-stack"><input class="edit-input" id="r-edit-field" type="text" maxlength="140" value="${esc(r.t)}" aria-label="Edit routine"><div class="edit-schedule"><label>Start time<input class="routine-edit-time" type="time" value="${validClock(r.at) ? r.at : ""}"></label><label>Duration in minutes<input class="routine-edit-duration" type="number" min="1" max="1440" step="5" value="${Number.isInteger(r.dur) ? r.dur : ""}" placeholder="60"></label><output class="schedule-end">${esc(endClock(r.at, r.dur))}</output></div><div class="edit-meta-fields"><label>Category<select class="routine-edit-category">${categoryOptions(r.category || "")}</select></label><label>Priority<select class="routine-edit-priority">${priorityOptions(r.priority || "normal")}</select></label></div></div><button type="button" class="mini" data-act="rsave">Save</button><button type="button" class="mini" data-act="rcancel">Cancel</button></li>`
+      : `<li data-rid="${r.id}"><span class="r-row-copy"><span class="r-txt">${esc(r.t)}</span>${taskBadges(r)}${clockLabel(r.at, r.dur) ? `<small class="task-time">${esc(clockLabel(r.at, r.dur))}</small>` : ""}</span><div class="chips" role="group" aria-label="Repeats on">${SHORT.map((_, i) => chipHtml(i, r.days.includes(i))).join("")}</div><div class="r-acts"><button type="button" class="icon" data-act="redit" aria-label="Edit routine" title="Edit">${ICON.edit}</button><button type="button" class="icon del" data-act="rdel" aria-label="Delete routine" title="Delete">${ICON.trash}</button></div></li>`
     ).join("");
   };
 
@@ -1063,7 +1192,16 @@ body.searching .day-toggle { display: none; }
     } else if (Notification.permission === "denied") {
       $("reminderStatus").textContent = "Notifications are blocked for this site. Allow them in your browser or iPhone settings.";
     } else if (prefs.enabled && Notification.permission === "granted") {
-      $("reminderStatus").textContent = "Alerts are enabled here. Keep the site open for browser reminders.";
+      const config = window.SPIDER_FIREBASE_CONFIG;
+      if (!config || !config.webPushPublicKey || !config.pushWorkerUrl) {
+        $("reminderStatus").textContent = "Alerts are enabled, but the free background push service still needs setup.";
+      } else if (remote.pushSyncState === "error") {
+        $("reminderStatus").textContent = "Could not sync background reminders. Check the free push service setup.";
+      } else if (remote.pushSyncState === "synced") {
+        $("reminderStatus").textContent = "Background reminders are synced for the next 30 days.";
+      } else {
+        $("reminderStatus").textContent = "Background reminders are being synced.";
+      }
     } else if (prefs.enabled) {
       $("reminderStatus").textContent = "Alerts are enabled for your account; allow notifications on this device to receive them.";
     } else {
@@ -1076,6 +1214,41 @@ body.searching .day-toggle { display: none; }
     leap: "Leap into action.",
     custom: state.notifications.custom.trim() || "Spider-sense is tingling."
   })[state.notifications.message];
+  const buildPushSchedule = () => {
+    if (!state.notifications.enabled) return [];
+    const now = Date.now();
+    const today = new Date();
+    const reminders = [];
+    const addReminder = (task, dateKey, id) => {
+      if (task.d || !validClock(task.at)) return;
+      const alertAt = new Date(`${dateKey}T${task.at}:00`).getTime() - state.notifications.lead * 60000;
+      if (!Number.isFinite(alertAt) || alertAt < now - 5 * 60000) return;
+      const lead = state.notifications.lead;
+      reminders.push({
+        id: `${dateKey}:${id}`,
+        alertAt,
+        title: reminderTitle(),
+        body: lead ? `${String(task.t).slice(0, 140)} starts at ${task.at} — in ${lead} minute${lead === 1 ? "" : "s"}.` : `${String(task.t).slice(0, 140)} starts now.`,
+        tag: `spider-task-${dateKey}-${id}`.slice(0, 120)
+      });
+    };
+    for (let offset = 0; offset < 30; offset++) {
+      const date = addDays(today, offset);
+      const dateKey = keyOf(date);
+      const weekKey = keyOf(weekStart(date));
+      const weekdayIndex = (date.getDay() + 1) % 7;
+      const week = state.weeks[weekKey];
+      const tasks = week ? week.days[weekdayIndex] : [];
+      tasks.forEach(task => addReminder(task, dateKey, task.id));
+      state.routines.forEach(routine => {
+        if (!routine.days.includes(weekdayIndex) || !validClock(routine.at)) return;
+        if (tasks.some(task => task.r === routine.id)) return;
+        if (week && week.gen.includes(`${routine.id}:${weekdayIndex}`)) return;
+        addReminder({ id: routine.id, t: routine.t, at: routine.at, d: false }, dateKey, `routine-${routine.id}`);
+      });
+    }
+    return reminders.sort((a, b) => a.alertAt - b.alertAt).slice(0, 1000);
+  };
   const showTaskNotification = async task => {
     if (!("Notification" in window) || Notification.permission !== "granted") return;
     const lead = state.notifications.lead;
@@ -1133,13 +1306,11 @@ body.searching .day-toggle { display: none; }
     const w = state.weeks[viewWk];
     if (w) matches = w.days.reduce((n, list) => n + filterTasks(list).length, 0);
     renderRoutines();
-    renderWeeklyInsights();
     renderReminderSettings();
     scheduleBrowserReminders();
     publishNativeState();
     $("routine").hidden = !!searchQuery;
     $("syncPanel").hidden = !!searchQuery;
-    $("weeklyInsights").hidden = !!searchQuery;
     $("transferPanel").hidden = !!searchQuery;
     $("searchEmpty").hidden = !searchQuery || matches > 0;
     const hiddenMatches = searchQuery && ui.hideDone && w
@@ -1221,6 +1392,7 @@ body.searching .day-toggle { display: none; }
   $("reminderToggle").addEventListener("click", async () => {
     if (state.notifications.enabled) {
       state.notifications.enabled = false;
+      if (remote.unregisterPushSubscription) remote.unregisterPushSubscription().catch(() => {});
       commit(true);
       return;
     }
@@ -1231,12 +1403,35 @@ body.searching .day-toggle { display: none; }
       return;
     }
     if (!("Notification" in window)) { $("reminderStatus").textContent = "Notifications are not available in this browser."; return; }
+    if (!remote.ownerUid || !remote.registerPushSubscription) {
+      $("reminderStatus").textContent = "Sign in to your Spider Tasks account before enabling background alerts.";
+      return;
+    }
+    const config = window.SPIDER_FIREBASE_CONFIG;
+    if (!config || !config.webPushPublicKey || !config.pushWorkerUrl) {
+      $("reminderStatus").textContent = "Free background alerts need the Web Push key and Cloudflare Worker setup first.";
+      return;
+    }
+    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isHomeScreenApp = navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches;
+    if (isIOS && !isHomeScreenApp) {
+      $("reminderStatus").textContent = "On iPhone, open Spider Tasks from its Home Screen icon to enable push alerts.";
+      return;
+    }
     let permission = Notification.permission;
     if (permission === "default") {
       try { permission = await Notification.requestPermission(); } catch { permission = "denied"; }
     }
     if (permission !== "granted") {
       $("reminderStatus").textContent = "Allow notifications for this site in your browser or iPhone settings, then try again.";
+      return;
+    }
+    try {
+      await remote.registerPushSubscription();
+    } catch (err) {
+      $("reminderStatus").textContent = err && err.message === "push-not-supported"
+        ? "Push alerts are not supported in this browser or iOS version."
+        : "Could not register this device for background alerts. Check the free push service setup and try again.";
       return;
     }
     state.notifications.enabled = true;
@@ -1264,12 +1459,14 @@ body.searching .day-toggle { display: none; }
     const at = timeInput.value;
     const durationText = durationInput.value.trim();
     const dur = durationText ? Number(durationText) : null;
+    const category = document.querySelector(".edit-category").value;
+    const priority = document.querySelector(".edit-priority").value;
     if ((durationText && (!validClock(at) || !Number.isInteger(dur) || dur < 1 || dur > 1440))) {
       showToast("Add a start time and a duration from 1 to 1440 minutes.");
       (validClock(at) ? durationInput : timeInput).focus();
       return;
     }
-    const changed = v !== t.t || (at || "") !== (t.at || "") || (dur || null) !== (t.dur || null);
+    const changed = v !== t.t || (at || "") !== (t.at || "") || (dur || null) !== (t.dur || null) || (category || "") !== (t.category || "") || priority !== (t.priority || "normal");
     editing = null;
     pendingFocus = searchQuery && !v.toLocaleLowerCase().includes(searchQuery)
       ? "#taskSearch"
@@ -1278,6 +1475,8 @@ body.searching .day-toggle { display: none; }
       t.t = v;
       if (validClock(at)) t.at = at; else delete t.at;
       if (dur) t.dur = dur; else delete t.dur;
+      if (CATEGORIES[category]) t.category = category; else delete t.category;
+      t.priority = PRIORITIES[priority] ? priority : "normal";
       commit(true);
     } else { renderDay(i); applyFocus(); }
   };
@@ -1293,6 +1492,29 @@ body.searching .day-toggle { display: none; }
     }, extra);
   };
 
+  const carryUnfinishedToTomorrow = () => {
+    const today = fromKey(todayKey);
+    const sourceWeekKey = keyOf(weekStart(today));
+    const sourceDay = (today.getDay() + 1) % 7;
+    const sourceWeek = state.weeks[sourceWeekKey];
+    if (!sourceWeek) return { moved: 0, merged: 0 };
+    const source = sourceWeek.days[sourceDay];
+    const pending = source.filter(task => !task.d);
+    if (!pending.length) return { moved: 0, merged: 0 };
+    const tomorrow = addDays(today, 1);
+    const targetWeekKey = keyOf(weekStart(tomorrow));
+    const targetDay = (tomorrow.getDay() + 1) % 7;
+    const targetWeek = ensureWeek(targetWeekKey);
+    materialize(targetWeekKey);
+    const target = targetWeek.days[targetDay];
+    const toMove = pending.filter(task => !(task.r && target.some(next => next.r === task.r && !next.d)))
+      .map(task => { const moved = { ...task }; delete moved.r; return moved; });
+    sourceWeek.days[sourceDay] = source.filter(task => task.d);
+    target.push(...toMove);
+    commit(true);
+    return { moved: toMove.length, merged: pending.length - toMove.length };
+  };
+
   daysEl.addEventListener("submit", ev => {
     ev.preventDefault();
     const s = ev.target.closest(".day");
@@ -1304,6 +1526,8 @@ body.searching .day-toggle { display: none; }
     const durationInput = s.querySelector(".new-duration");
     const durationText = durationInput.value.trim();
     const dur = durationText ? Number(durationText) : null;
+    const category = s.querySelector(".new-category").value;
+    const priority = s.querySelector(".new-priority").value;
     if (durationText && (!validClock(at) || !Number.isInteger(dur) || dur < 1 || dur > 1440)) {
       showToast("Add a start time and a duration from 1 to 1440 minutes.");
       (validClock(at) ? durationInput : s.querySelector(".new-time")).focus();
@@ -1316,10 +1540,14 @@ body.searching .day-toggle { display: none; }
     const task = { id: uid(), t: v, d: false };
     if (validClock(at)) task.at = at;
     if (dur) task.dur = dur;
+    if (CATEGORIES[category]) task.category = category;
+    task.priority = PRIORITIES[priority] ? priority : "normal";
     ensureWeek(viewWk).days[i].push(task);
     input.value = "";
     s.querySelector(".new-time").value = "";
     durationInput.value = "";
+    s.querySelector(".new-category").value = "";
+    s.querySelector(".new-priority").value = "normal";
     s.querySelector(".schedule-details").open = false;
     pendingFocus = `#add-${i}`;
     commit(true);
@@ -1328,6 +1556,17 @@ body.searching .day-toggle { display: none; }
   daysEl.addEventListener("click", ev => {
     const b = ev.target.closest("button[data-act]");
     if (!b) return;
+    if (b.dataset.act === "drag") return;
+    if (b.dataset.act === "carry") {
+      act(({ moved, merged }) => {
+        const parts = [
+          moved ? `Moved ${moved} unfinished task${moved === 1 ? "" : "s"} to tomorrow` : "",
+          merged ? `${merged} recurring task${merged === 1 ? " was" : "s were"} already scheduled tomorrow` : ""
+        ].filter(Boolean);
+        return parts.length ? parts.join("; ") + "." : "No unfinished tasks to move.";
+      }, carryUnfinishedToTomorrow);
+      return;
+    }
     if (b.dataset.act === "collapse") {
       const s = b.closest(".day");
       ui.collapsed[s.dataset.date] = !ui.collapsed[s.dataset.date];
@@ -1346,11 +1585,14 @@ body.searching .day-toggle { display: none; }
     const t = w.days[i][idx];
     const a = b.dataset.act;
     if (a === "toggle") {
+      const wasDone = t.d;
       t.d = !t.d;
+      if (!t.d) delete t.rating;
       pendingFocus = filterTasks(w.days[i]).includes(t)
         ? 'li[data-id="' + id + '"] [data-act="toggle"]'
         : (searchQuery ? "#taskSearch" : "#add-" + i);
       commit(true);
+      if (!wasDone && t.d) promptTaskRating({ weekKey: viewWk, dayIndex: i, taskId: id });
     } else if (a === "edit") {
       editing = id;
       pendingFocus = "#edit-field";
@@ -1364,6 +1606,59 @@ body.searching .day-toggle { display: none; }
     } else if (a === "save") saveEdit(i, t);
     else if (a === "del") removeTask(i, idx, t);
   });
+
+  daysEl.addEventListener("pointerdown", ev => {
+    const handle = ev.target.closest(".drag-handle");
+    if (!handle || handle.hidden || ev.button !== 0 || searchQuery || editing) return;
+    const item = handle.closest("li[data-id]");
+    const list = item && item.parentElement;
+    if (!item || !list || list.querySelectorAll(":scope > li[data-id]").length < 2) return;
+    ev.preventDefault();
+    dragState = {
+      pointerId: ev.pointerId,
+      dayIndex: +handle.closest(".day").dataset.day,
+      weekKey: viewWk,
+      handle,
+      item,
+      list,
+      originalIds: [...list.querySelectorAll(":scope > li[data-id]")].map(li => li.dataset.id)
+    };
+    item.classList.add("dragging");
+    try { handle.setPointerCapture(ev.pointerId); } catch {}
+  });
+
+  daysEl.addEventListener("pointermove", ev => {
+    if (!dragState || ev.pointerId !== dragState.pointerId) return;
+    ev.preventDefault();
+    const target = document.elementFromPoint(ev.clientX, ev.clientY)?.closest("li[data-id]");
+    if (!target || target === dragState.item || target.parentElement !== dragState.list) return;
+    const rect = target.getBoundingClientRect();
+    dragState.list.insertBefore(dragState.item, ev.clientY < rect.top + rect.height / 2 ? target : target.nextElementSibling);
+  });
+
+  const finishTaskDrag = (ev, cancelled = false) => {
+    if (!dragState || (ev && ev.pointerId !== dragState.pointerId)) return;
+    const drag = dragState;
+    dragState = null;
+    drag.item.classList.remove("dragging");
+    try { if (drag.handle.hasPointerCapture(drag.pointerId)) drag.handle.releasePointerCapture(drag.pointerId); } catch {}
+    if (cancelled) { renderDay(drag.dayIndex); return; }
+    if (viewWk !== drag.weekKey || !drag.list.isConnected) { renderDay(drag.dayIndex); return; }
+    const nextIds = [...drag.list.querySelectorAll(":scope > li[data-id]")].map(li => li.dataset.id);
+    if (nextIds.length !== drag.originalIds.length || nextIds.every((id, index) => id === drag.originalIds[index])) return;
+    const week = state.weeks[viewWk];
+    const tasks = week && week.days[drag.dayIndex];
+    if (!tasks) return;
+    const byId = new Map(tasks.map(task => [task.id, task]));
+    const reordered = nextIds.map(id => byId.get(id));
+    if (reordered.some(task => !task)) { renderDay(drag.dayIndex); return; }
+    let position = 0;
+    week.days[drag.dayIndex] = tasks.map(task => (!ui.hideDone || !task.d) ? reordered[position++] : task);
+    commit(true);
+    showToast("Task order saved.");
+  };
+  daysEl.addEventListener("pointerup", ev => finishTaskDrag(ev));
+  daysEl.addEventListener("pointercancel", ev => finishTaskDrag(ev, true));
 
   daysEl.addEventListener("keydown", ev => {
     if (ev.target.id !== "edit-field") return;
@@ -1404,6 +1699,8 @@ body.searching .day-toggle { display: none; }
     const at = $("rt-time").value;
     const durationText = $("rt-duration").value.trim();
     const dur = durationText ? Number(durationText) : null;
+    const category = $("rt-category").value;
+    const priority = $("rt-priority").value;
     if (!text) { $("rNote").textContent = "Type the task first."; $("rt-text").focus(); return; }
     if (!days.length) { $("rNote").textContent = "Pick at least one day."; return; }
     if (durationText && (!validClock(at) || !Number.isInteger(dur) || dur < 1 || dur > 1440)) {
@@ -1411,10 +1708,12 @@ body.searching .day-toggle { display: none; }
       $("rt-time").focus();
       return;
     }
-    act(`Routine added. It repeats ${describe(days)}.`, () => addRoutine(text, days, at, dur));
+    act(`Routine added. It repeats ${describe(days)}.`, () => addRoutine(text, days, at, dur, category, priority));
     $("rt-text").value = "";
     $("rt-time").value = "";
     $("rt-duration").value = "";
+    $("rt-category").value = "";
+    $("rt-priority").value = "normal";
     $("rForm").querySelector(".schedule-details").open = false;
     $("rChips").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", "false"));
     $("rNote").textContent = "";
@@ -1432,13 +1731,17 @@ body.searching .day-toggle { display: none; }
       showToast("Add a start time and a duration from 1 to 1440 minutes.");
       return;
     }
-    const changed = v !== r.t || (at || "") !== (r.at || "") || (dur || null) !== (r.dur || null);
+    const category = document.querySelector(".routine-edit-category").value;
+    const priority = document.querySelector(".routine-edit-priority").value;
+    const changed = v !== r.t || (at || "") !== (r.at || "") || (dur || null) !== (r.dur || null) || (category || "") !== (r.category || "") || priority !== (r.priority || "normal");
     routineEditing = null;
     pendingFocus = `li[data-rid="${id}"] [data-act="redit"]`;
     if (v && changed) {
       r.t = v;
       if (validClock(at)) r.at = at; else delete r.at;
       if (dur) r.dur = dur; else delete r.dur;
+      if (CATEGORIES[category]) r.category = category; else delete r.category;
+      r.priority = PRIORITIES[priority] ? priority : "normal";
       Object.keys(state.weeks).forEach(wk => state.weeks[wk].days.forEach((list, i) => {
         if (!upcoming(wk, i)) return;
         list.forEach(t => {
@@ -1446,6 +1749,8 @@ body.searching .day-toggle { display: none; }
           t.t = r.t;
           if (validClock(at)) t.at = at; else delete t.at;
           if (dur) t.dur = dur; else delete t.dur;
+          if (CATEGORIES[category]) t.category = category; else delete t.category;
+          t.priority = r.priority;
         });
       }));
       commit(true);
@@ -1557,6 +1862,7 @@ body.searching .day-toggle { display: none; }
     const weekdayIndex = (new Date().getDay() + 1) % 7;
     const todayTasks = state.weeks[curWk] ? state.weeks[curWk].days[weekdayIndex] : [];
     let changed = false;
+    const newlyCompleted = [];
     snap.docs.forEach(doc => {
       const data = doc.data();
       if (typeof data.done !== "boolean") return;
@@ -1564,11 +1870,14 @@ body.searching .day-toggle { display: none; }
       remote.widgetSyncPending = true;
       const task = todayTasks.find(item => item.id === doc.id);
       if (task && task.d !== data.done) {
+        if (!task.d && data.done) newlyCompleted.push({ weekKey: curWk, dayIndex: weekdayIndex, taskId: task.id });
         task.d = data.done;
+        if (!task.d) delete task.rating;
         changed = true;
       }
     });
     if (changed) commit(true);
+    newlyCompleted.forEach(promptTaskRating);
     if (remote.live && remote.widgetSyncPending) scheduleRemote(changed ? 700 : 0);
   };
 
@@ -1590,6 +1899,14 @@ body.searching .day-toggle { display: none; }
     remote.pendingWidgetDeletes = new Set();
     remote.widgetSyncPending = false;
     remote.ownerUid = null;
+    remote.registerPushSubscription = null;
+    remote.unregisterPushSubscription = null;
+    remote.syncPushSchedule = null;
+    remote.lastPushScheduleSignature = null;
+    remote.pushSyncState = "idle";
+    clearTimeout(remote.pushRetryTimer);
+    remote.pushRetryTimer = null;
+    remote.pushFail = 0;
     remote.feedError = false;
     remote.live = false;
     remote.dead = false;
@@ -1660,6 +1977,64 @@ body.searching .day-toggle { display: none; }
         setAccountView(user);
         if (user) {
           remote.ownerUid = user.uid;
+          remote.registerPushSubscription = async () => {
+            if (!config.webPushPublicKey) throw new Error("Missing Web Push public key");
+            if (!config.pushWorkerUrl) throw new Error("Missing push worker URL");
+            const registration = await navigator.serviceWorker.ready;
+            if (!registration.pushManager) throw new Error("push-not-supported");
+            const applicationServerKey = urlBase64ToUint8Array(config.webPushPublicKey);
+            let subscription = await registration.pushManager.getSubscription();
+            if (subscription) {
+              const existingKey = subscription.options && subscription.options.applicationServerKey;
+              if (!existingKey || !sameBytes(existingKey, applicationServerKey)) {
+                await subscription.unsubscribe();
+                subscription = null;
+              }
+            }
+            if (!subscription) {
+              subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey });
+            }
+            if (!subscription) throw new Error("No push subscription was returned");
+            const response = await fetch(`${config.pushWorkerUrl.replace(/\/+$/, "")}/api/register`, {
+              method: "POST",
+              headers: { "Authorization": `Bearer ${await user.getIdToken()}`, "Content-Type": "application/json" },
+              body: JSON.stringify({ subscription: subscription.toJSON() })
+            });
+            if (!response.ok) throw new Error("Push worker could not register this device");
+            return subscription;
+          };
+          remote.unregisterPushSubscription = async () => {
+            if (!config.pushWorkerUrl || !auth.currentUser) return;
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = registration.pushManager && await registration.pushManager.getSubscription();
+            if (!subscription) return;
+            let response;
+            try {
+              response = await fetch(`${config.pushWorkerUrl.replace(/\/+$/, "")}/api/unregister`, {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${await auth.currentUser.getIdToken()}`, "Content-Type": "application/json" },
+                body: JSON.stringify({ endpoint: subscription.endpoint })
+              });
+            } catch (error) {
+              await subscription.unsubscribe();
+              throw error;
+            }
+            await subscription.unsubscribe();
+            if (!response.ok) throw new Error("Push worker could not unregister this device");
+          };
+          remote.syncPushSchedule = async () => {
+            if (!config.pushWorkerUrl || !auth.currentUser) return;
+            const reminders = buildPushSchedule();
+            const signature = JSON.stringify(reminders);
+            if (signature === remote.lastPushScheduleSignature) return;
+            const response = await fetch(`${config.pushWorkerUrl.replace(/\/+$/, "")}/api/schedule`, {
+              method: "POST",
+              headers: { "Authorization": `Bearer ${await auth.currentUser.getIdToken()}`, "Content-Type": "application/json" },
+              body: JSON.stringify({ reminders })
+            });
+            if (!response.ok) throw new Error("Push worker could not update reminders");
+            remote.lastPushScheduleSignature = signature;
+          };
           remote.makeFeedRef = id => dbMod.doc(db, "widgetFeeds", id);
           remote.makeCompletionRef = (feedId, taskId) => dbMod.doc(db, "widgetFeeds", feedId, "completions", taskId);
           remote.deleteCompletion = taskId => dbMod.deleteDoc(remote.makeCompletionRef(remote.feedId, taskId));
@@ -1690,6 +2065,9 @@ body.searching .day-toggle { display: none; }
         }
         renderWidgetConnection();
         setSync();
+        if (user && state.notifications.enabled && "Notification" in window && Notification.permission === "granted" && config.webPushPublicKey && config.pushWorkerUrl) {
+          remote.registerPushSubscription().catch(() => {});
+        }
       }, onRemoteErr);
 
       $("syncForm").addEventListener("submit", async ev => {
@@ -1701,7 +2079,14 @@ body.searching .day-toggle { display: none; }
         await runAuth(() => authMod.createUserWithEmailAndPassword(auth, $("syncEmail").value.trim(), $("syncPassword").value));
       });
       $("syncSignOut").addEventListener("click", async () => {
-        try { await authMod.signOut(auth); $("syncPassword").value = ""; }
+        let pushCleanupFailed = false;
+        try { if (remote.unregisterPushSubscription) await remote.unregisterPushSubscription(); }
+        catch { pushCleanupFailed = true; }
+        try {
+          await authMod.signOut(auth);
+          $("syncPassword").value = "";
+          if (pushCleanupFailed) showToast("Signed out, but push cleanup could not be confirmed. Reopen the app online to clear it.");
+        }
         catch (err) { showToast(friendlyFirebaseError(err)); }
       });
       return true;

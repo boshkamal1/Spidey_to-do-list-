@@ -31,8 +31,23 @@ struct WebPlannerView: UIViewRepresentable {
     final class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
         weak var webView: WKWebView?
         private var lastPlannerSignature = ""
+        private var lastPlannerPayload: [String: Any]?
         private var widgetReloadWorkItem: DispatchWorkItem?
         private let center = UNUserNotificationCenter.current()
+
+        override init() {
+            super.init()
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(appWillEnterForeground),
+                name: UIApplication.willEnterForegroundNotification,
+                object: nil
+            )
+        }
+
+        deinit {
+            NotificationCenter.default.removeObserver(self)
+        }
 
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             switch message.name {
@@ -48,15 +63,31 @@ struct WebPlannerView: UIViewRepresentable {
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            refreshNotificationAuthorization()
+        }
+
+        @objc private func appWillEnterForeground() {
+            refreshNotificationAuthorization()
+        }
+
+        private func refreshNotificationAuthorization(permissionEvent: String? = nil) {
             center.getNotificationSettings { [weak self] settings in
+                guard let self else { return }
                 let granted = settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
-                self?.dispatchPermissionEvent("spiderNativeNotificationStatus", granted: granted)
+                self.dispatchPermissionEvent("spiderNativeNotificationStatus", granted: granted)
+                if let permissionEvent {
+                    self.dispatchPermissionEvent(permissionEvent, granted: granted)
+                }
+                if granted, let payload = self.lastPlannerPayload {
+                    self.lastPlannerSignature = ""
+                    self.scheduleNotifications(from: payload)
+                }
             }
         }
 
         private func requestNotificationPermission() {
-            center.requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, _ in
-                self?.dispatchPermissionEvent("spiderNativeNotificationPermission", granted: granted)
+            center.requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] _, _ in
+                self?.refreshNotificationAuthorization(permissionEvent: "spiderNativeNotificationPermission")
             }
         }
 
@@ -79,6 +110,7 @@ struct WebPlannerView: UIViewRepresentable {
         }
 
         private func scheduleNotifications(from payload: [String: Any]) {
+            lastPlannerPayload = payload
             guard let preferences = payload["notifications"] as? [String: Any] else { return }
             let enabled = preferences["enabled"] as? Bool ?? false
             guard enabled else {

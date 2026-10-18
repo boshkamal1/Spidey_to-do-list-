@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: Check out source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install XcodeGen
         run: brew install xcodegen
@@ -41,7 +41,7 @@ jobs:
           /usr/bin/ditto -c -k --sequesterRsrc --keepParent Payload SpiderTasks-unsigned.ipa
 
       - name: Upload app artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: spider-tasks-ios
           path: dist/SpiderTasks-unsigned.ipa

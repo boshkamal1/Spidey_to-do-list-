@@ -3,13 +3,22 @@
     "rules": "firestore.rules"
   },
   "hosting": {
+    "site": "spidy-list",
     "public": ".",
     "ignore": [
       "firebase.json",
       "firestore.rules",
       "README.md",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      ".github/**",
+      ".git/**",
+      "cloudflare/**",
+      "ios/**",
+      "functions/**",
+      "Spider Tasks PWA/**",
+      "build/**",
+      "dist/**"
     ]
   }
 }
