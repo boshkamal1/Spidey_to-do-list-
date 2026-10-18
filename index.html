@@ -190,6 +190,17 @@ body.focus-mode .day.today .day-toggle { display: none; }
 .chev svg { width: 22px; height: 22px; }
 .routine[open] .chev { transform: rotate(180deg); }
 .r-body { display: grid; gap: 14px; padding: 0 18px 18px; }
+.quick-add-panel { margin-top: 4px; border-color: var(--line); box-shadow: none; }
+.quick-add-panel summary { padding: 8px 12px; }
+.quick-add-panel .r-title { font-family: var(--font-body); font-size: .95rem; font-weight: 700; line-height: 1.3; text-transform: none; letter-spacing: 0; }
+.quick-add-panel .r-count { background: var(--panel-2); color: var(--muted); font-size: .75rem; padding: 2px 8px; transform: none; }
+.quick-add-panel .r-body { gap: 8px; padding: 0 12px 12px; }
+.quick-add-days { display: flex; gap: 6px; }
+.quick-add-day { padding: 4px 10px; background: var(--panel-2); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; font-size: .82rem; font-weight: 700; }
+.quick-add-day[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+.quick-add-form { display: flex; gap: 6px; min-width: 0; }
+.quick-add-form input { flex: 1; min-width: 0; padding: 7px 9px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; }
+.quick-add-form button { padding: 0 12px; background: var(--red-fill); color: #fff; border: 0; border-radius: 8px; font-size: .85rem; font-weight: 700; }
 .sync-panel { border-color: var(--cyan); box-shadow: 7px 7px 0 rgba(45, 226, 255, .22); }
 .sync-panel .r-count { background: var(--panel-2); color: var(--cyan); }
 .sync-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -367,6 +378,23 @@ h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 2
       <div class="bar"><i id="weekBar"></i></div>
     </div>
   </header>
+  <details class="routine quick-add-panel" id="quickAddPanel">
+    <summary>
+      <span class="r-title">Quick add</span>
+      <span class="r-count">Today · Tomorrow</span>
+      <span class="chev ico" data-icon="down"></span>
+    </summary>
+    <div class="r-body">
+      <div class="quick-add-days" id="quickAddDays" role="group" aria-label="Choose a day">
+        <button type="button" class="quick-add-day" data-quick-offset="0" aria-pressed="true">Today</button>
+        <button type="button" class="quick-add-day" data-quick-offset="1" aria-pressed="false">Tomorrow</button>
+      </div>
+      <form class="quick-add-form" id="quickAddForm" autocomplete="off">
+        <input type="text" id="quickAddText" maxlength="140" placeholder="Add a task for today" aria-label="Add a task for today">
+        <button type="submit">Add</button>
+      </form>
+    </div>
+  </details>
   <details class="routine sync-panel" id="syncPanel">
     <summary>
       <span class="r-title">☁ Account sync</span>
@@ -675,6 +703,7 @@ h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 2
   let viewWk = curWk;
   let editing = null;
   let routineEditing = null;
+  let quickAddOffset = 0;
   let dragState = null;
   let pendingFocus = null;
   let pendingTaskRating = null;
@@ -1300,6 +1329,37 @@ h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 2
   $("prevWk").addEventListener("click", () => changeWeek(keyOf(addDays(fromKey(viewWk), -7))));
   $("nextWk").addEventListener("click", () => changeWeek(keyOf(addDays(fromKey(viewWk), 7))));
   $("thisWk").addEventListener("click", () => changeWeek(curWk));
+  $("quickAddDays").addEventListener("click", ev => {
+    const button = ev.target.closest("[data-quick-offset]");
+    if (!button) return;
+    quickAddOffset = Number(button.dataset.quickOffset);
+    $("quickAddDays").querySelectorAll("[data-quick-offset]").forEach(choice => {
+      choice.setAttribute("aria-pressed", String(choice === button));
+    });
+    const label = quickAddOffset === 0 ? "today" : "tomorrow";
+    $("quickAddText").placeholder = `Add a task for ${label}`;
+    $("quickAddText").setAttribute("aria-label", `Add a task for ${label}`);
+    $("quickAddText").focus();
+  });
+  $("quickAddForm").addEventListener("submit", ev => {
+    ev.preventDefault();
+    const input = $("quickAddText");
+    const text = input.value.trim();
+    if (!text) { input.focus(); return; }
+    const targetDate = addDays(new Date(), quickAddOffset);
+    const targetDateKey = keyOf(targetDate);
+    const targetWeekKey = keyOf(weekStart(targetDate));
+    const targetDayIndex = (targetDate.getDay() + 1) % 7;
+    materialize(targetWeekKey);
+    ensureWeek(targetWeekKey).days[targetDayIndex].push({ id: uid(), t: text, d: false, priority: "normal" });
+    viewWk = targetWeekKey;
+    editing = null;
+    ui.collapsed[targetDateKey] = false;
+    input.value = "";
+    pendingFocus = "#quickAddText";
+    commit(true);
+    showToast(`Added to ${quickAddOffset === 0 ? "today" : "tomorrow"}.`);
+  });
   $("focusToday").addEventListener("click", () => {
     ui.focusMode = !ui.focusMode;
     if (ui.focusMode) {
