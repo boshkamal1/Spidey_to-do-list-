@@ -44,7 +44,7 @@ html[data-theme="comic"] {
   color-scheme: light;
 }
 html[data-theme="friendly"] {
-  --bg: #eaf6ff;
+  --bg: #dceaf4;
   --panel: #ffffff;
   --panel-2: #f4fafe;
   --fg: #17324d;
@@ -64,6 +64,11 @@ html[data-theme="friendly"] h2 {
   font-weight: 700;
   letter-spacing: 0;
   text-shadow: none;
+}
+html[data-theme="friendly"] h1 {
+  font-size: clamp(2rem, 7vw, 3rem);
+  line-height: 1.2;
+  text-transform: none;
 }
 html[data-theme="friendly"] header.top::before { opacity: .12; }
 html[data-theme="friendly"] .day,
@@ -1323,7 +1328,7 @@ body.searching .day-toggle { display: none; }
     $("hideDone").setAttribute("aria-pressed", String(ui.hideDone));
     $("hideDone").textContent = ui.hideDone ? "Show completed" : "Hide completed";
     document.documentElement.dataset.theme = ui.theme;
-    document.querySelector('meta[name="theme-color"]').content = ({ miles: "#0a0710", comic: "#f5ead8", friendly: "#eaf6ff" })[ui.theme];
+    document.querySelector('meta[name="theme-color"]').content = ({ miles: "#0a0710", comic: "#f5ead8", friendly: "#dceaf4" })[ui.theme];
     document.body.classList.toggle("focus-mode", ui.focusMode);
     document.body.classList.toggle("searching", !!searchQuery);
     document.querySelectorAll("[data-theme-choice]").forEach(b => {
